@@ -61,10 +61,10 @@ const SettingsView: React.FC<SettingsViewProps> = ({ settings, categories, onSet
         </button>
       </div>
 
-      <div className="p-4 bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800">
-        <h4 className="text-sm font-medium mb-2">Sobre</h4>
-        <p className="text-xs text-zinc-500 dark:text-zinc-400">Controle Financeiro Pro v1.1</p>
-        <p className="text-xs text-zinc-500 dark:text-zinc-400">Gerencie suas finanças com facilidade.</p>
+      <div className="p-4 bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 flex flex-col items-center text-center">
+        <img src="/icons/icon-192x192.png" alt="Wallet SATTI Logo" className="w-20 h-20 mb-4 rounded-2xl" />
+        <h4 className="text-lg font-semibold">Wallet SATTI</h4>
+        <p className="text-xs text-zinc-500 dark:text-zinc-400">Versão 1.1</p>
       </div>
     </div>
   );
