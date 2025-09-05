@@ -1,0 +1,25 @@
+
+{
+  "short_name": "Finanças Pro",
+  "name": "Controle de Finanças Pro",
+  "description": "A comprehensive personal finance control application to manage income, expenses, and view detailed financial reports and charts.",
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#18181b",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#18181b"
+}
