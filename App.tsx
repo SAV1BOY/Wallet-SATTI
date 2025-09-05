@@ -207,7 +207,14 @@ export default function App() {
   }, []);
   
   const handleResetData = useCallback(() => {
-    setData(getEmptyData());
+    setData(d => {
+      const emptyData = getEmptyData();
+      return {
+        ...emptyData,
+        settings: d.settings,
+        categories: d.categories,
+      };
+    });
   }, []);
   
   const handleSaveCategory = (categoryData: Omit<Category, 'id'> & { id?: string }) => {
