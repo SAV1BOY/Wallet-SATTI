@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { SavingsGoal } from '../../types';
 import Modal from '../ui/Modal';
@@ -46,9 +45,9 @@ const GoalModal: React.FC<GoalModalProps> = ({ open, onClose, onSave, initial })
     <Modal open={open} onClose={onClose} title={initial ? 'Editar Meta' : 'Nova Meta de Poupança'}>
       <div className="px-1 space-y-4">
         <div>
-          <label className="text-sm text-zinc-400 mb-1 block">Nome da Meta</label>
+          <label className="text-sm text-zinc-500 dark:text-zinc-400 mb-1 block">Nome da Meta</label>
           <input
-            className="w-full px-3 py-2 rounded-xl bg-zinc-800 border border-zinc-700 outline-none focus:border-cyan-500"
+            className="w-full px-3 py-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 outline-none focus:border-cyan-500"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Viagem para o Japão"
@@ -56,9 +55,9 @@ const GoalModal: React.FC<GoalModalProps> = ({ open, onClose, onSave, initial })
         </div>
 
         <div>
-          <label className="text-sm text-zinc-400 mb-1 block">Valor Alvo (R$)</label>
+          <label className="text-sm text-zinc-500 dark:text-zinc-400 mb-1 block">Valor Alvo (R$)</label>
           <input
-            className="w-full px-3 py-2 rounded-xl bg-zinc-800 border border-zinc-700 outline-none focus:border-cyan-500"
+            className="w-full px-3 py-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 outline-none focus:border-cyan-500"
             type="number"
             value={targetAmount || ''}
             onChange={(e) => setTargetAmount(parseFloat(e.target.value) || 0)}
@@ -67,10 +66,10 @@ const GoalModal: React.FC<GoalModalProps> = ({ open, onClose, onSave, initial })
         </div>
         
         <div>
-          <label className="text-sm text-zinc-400 mb-1 block">Data Alvo (Opcional)</label>
+          <label className="text-sm text-zinc-500 dark:text-zinc-400 mb-1 block">Data Alvo (Opcional)</label>
           <input
             type="date"
-            className="w-full px-3 py-2 rounded-xl bg-zinc-800 border border-zinc-700 outline-none focus:border-cyan-500"
+            className="w-full px-3 py-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 outline-none focus:border-cyan-500"
             value={targetDate}
             onChange={(e) => setTargetDate(e.target.value)}
           />

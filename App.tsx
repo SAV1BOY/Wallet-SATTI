@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { AppData, Occurrence, Entry, Tab, Action, Budget, SavingsGoal, Category, Kind } from './types';
 import { getInitialData, getAllOccurrences, getEmptyData } from './services/financeService';
@@ -279,11 +278,11 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 pb-28">
+    <div className="min-h-screen bg-zinc-100 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 pb-28">
       {activeTab === 'settings' ? (
-        <header className="sticky top-0 z-40 bg-zinc-900 border-b border-zinc-800">
+        <header className="sticky top-0 z-40 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-lg border-b border-zinc-200 dark:border-zinc-800">
           <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-center">
-              <div className="text-lg text-zinc-200 font-medium select-none">Configurações</div>
+              <div className="text-lg text-zinc-800 dark:text-zinc-200 font-medium select-none">Configurações</div>
           </div>
         </header>
       ) : (

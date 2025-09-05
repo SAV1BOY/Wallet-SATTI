@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Category } from '../../types';
 import Modal from '../ui/Modal';
@@ -52,9 +51,9 @@ const CategoryModal: React.FC<CategoryModalProps> = ({ open, onClose, onSave, in
     <Modal open={open} onClose={onClose} title={initial?.id ? 'Editar Categoria' : 'Nova Categoria'}>
       <div className="px-1 space-y-4">
         <div>
-          <label className="text-sm text-zinc-400 mb-1 block">Nome da Categoria</label>
+          <label className="text-sm text-zinc-500 dark:text-zinc-400 mb-1 block">Nome da Categoria</label>
           <input
-            className="w-full px-3 py-2 rounded-xl bg-zinc-800 border border-zinc-700 outline-none focus:border-cyan-500"
+            className="w-full px-3 py-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 outline-none focus:border-cyan-500"
             value={label}
             onChange={(e) => setLabel(e.target.value)}
             placeholder="Ex: Supermercado"
@@ -62,9 +61,9 @@ const CategoryModal: React.FC<CategoryModalProps> = ({ open, onClose, onSave, in
         </div>
 
         <div>
-          <label className="text-sm text-zinc-400 mb-1 block">Ícone (Emoji)</label>
+          <label className="text-sm text-zinc-500 dark:text-zinc-400 mb-1 block">Ícone (Emoji)</label>
           <input
-            className="w-full px-3 py-2 rounded-xl bg-zinc-800 border border-zinc-700 outline-none focus:border-cyan-500"
+            className="w-full px-3 py-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 outline-none focus:border-cyan-500"
             value={icon}
             onChange={(e) => setIcon(e.target.value)}
             placeholder="Ex: 🛒"
@@ -73,10 +72,10 @@ const CategoryModal: React.FC<CategoryModalProps> = ({ open, onClose, onSave, in
         </div>
         
         <div>
-          <label className="text-sm text-zinc-400 mb-2 block">Cor</label>
+          <label className="text-sm text-zinc-500 dark:text-zinc-400 mb-2 block">Cor</label>
           <div className="grid grid-cols-8 gap-2">
               {colorPalette.map(c => (
-                  <button key={c} onClick={() => setColor(c)} className={`w-8 h-8 rounded-full border-2 transition-transform transform hover:scale-110 ${color === c ? 'border-white' : 'border-transparent'}`} style={{ backgroundColor: c }} />
+                  <button key={c} onClick={() => setColor(c)} className={`w-8 h-8 rounded-full border-2 transition-transform transform hover:scale-110 ${color === c ? 'border-zinc-800 dark:border-white' : 'border-transparent'}`} style={{ backgroundColor: c }} />
               ))}
           </div>
         </div>

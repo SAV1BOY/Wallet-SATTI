@@ -1,4 +1,3 @@
-
 import React, { useMemo } from 'react';
 import { PieChart, Pie, ResponsiveContainer, Legend, Tooltip, Cell } from 'recharts';
 import { Occurrence, Kind, Settings, Category } from '../../types';
@@ -39,16 +38,22 @@ const CategoryPieChart: React.FC<CategoryPieChartProps> = ({ occurrences, kind, 
 
   if (data.length === 0) return null;
 
+  const tooltipContentStyle = {
+    backgroundColor: settings.dark ? '#18181b' : '#ffffff',
+    border: `1px solid ${settings.dark ? '#3f3f46' : '#e4e4e7'}`,
+    borderRadius: '0.5rem',
+  };
+
   return (
-    <div className="bg-zinc-900 rounded-2xl p-4 border border-zinc-800">
-      <h3 className="text-lg font-semibold mb-4 text-zinc-100">{kind === 'receita' ? 'Receitas' : 'Despesas'} por Categoria</h3>
+    <div className="bg-white dark:bg-zinc-900 rounded-2xl p-4 border border-zinc-200 dark:border-zinc-800">
+      <h3 className="text-lg font-semibold mb-4 text-zinc-900 dark:text-zinc-100">{kind === 'receita' ? 'Receitas' : 'Despesas'} por Categoria</h3>
       <ResponsiveContainer width="100%" height={300}>
         <PieChart>
           <Pie data={data} cx="50%" cy="50%" outerRadius={80} dataKey="value" nameKey="name" labelLine={false} label={({ name, percent }) => `${(percent * 100).toFixed(0)}%`}>
             {data.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.color} />)}
           </Pie>
           <Legend />
-          <Tooltip formatter={(v: number) => fmtMoney(v, settings.currency)} />
+          <Tooltip formatter={(v: number) => fmtMoney(v, settings.currency)} contentStyle={tooltipContentStyle} />
         </PieChart>
       </ResponsiveContainer>
     </div>

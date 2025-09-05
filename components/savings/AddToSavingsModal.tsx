@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { SavingsGoal } from '../../types';
 import Modal from '../ui/Modal';
@@ -33,11 +32,11 @@ const AddToSavingsModal: React.FC<AddToSavingsModalProps> = ({ open, onClose, on
   return (
     <Modal open={open} onClose={onClose} title={`Adicionar à Meta: ${goal.name}`}>
       <div className="px-1 space-y-4">
-        <div className="bg-zinc-800 rounded-xl p-3">
-          <div className="text-zinc-400 text-sm">Valor a Adicionar</div>
+        <div className="bg-zinc-100 dark:bg-zinc-800 rounded-xl p-3">
+          <div className="text-zinc-500 dark:text-zinc-400 text-sm">Valor a Adicionar</div>
           <CurrencyInput value={amount} onChange={setAmount} />
         </div>
-        <p className="text-xs text-zinc-400 text-center">
+        <p className="text-xs text-zinc-500 dark:text-zinc-400 text-center">
           Esta ação criará uma nova despesa na categoria "Poupança" para manter seu balanço correto.
         </p>
         <div className="pt-2">

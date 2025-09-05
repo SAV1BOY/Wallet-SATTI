@@ -1,4 +1,3 @@
-
 import React, { useMemo } from 'react';
 import { Occurrence, Settings, SkipData, Category } from '../../types';
 import { isSameYM, parseDate, fmtMoney } from '../../utils/helpers';
@@ -53,28 +52,28 @@ const DashboardView: React.FC<DashboardViewProps> = ({ allOccurrences, cursor, s
 
   return (
     <div className="space-y-6">
-      <div className="bg-zinc-900 rounded-2xl p-4 border border-zinc-800">
-        <div className="text-sm text-zinc-400 mb-1">Balanço do mês</div>
-        <div className="text-3xl font-bold my-1">{fmtMoney(totals.bal, settings.currency)}</div>
+      <div className="bg-white dark:bg-zinc-900 rounded-2xl p-4 border border-zinc-200 dark:border-zinc-800">
+        <div className="text-sm text-zinc-500 dark:text-zinc-400 mb-1">Balanço do mês</div>
+        <div className="text-3xl font-bold my-1 text-zinc-900 dark:text-zinc-100">{fmtMoney(totals.bal, settings.currency)}</div>
         <div className="grid grid-cols-2 gap-4 mt-2">
           <div>
-            <div className="text-sm text-emerald-400">Receitas</div>
-            <div className="font-semibold">{fmtMoney(totals.inc, settings.currency)}</div>
+            <div className="text-sm text-emerald-500 dark:text-emerald-400">Receitas</div>
+            <div className="font-semibold text-zinc-800 dark:text-zinc-200">{fmtMoney(totals.inc, settings.currency)}</div>
           </div>
           <div className="text-right">
-            <div className="text-sm text-rose-400">Despesas</div>
-            <div className="font-semibold">{fmtMoney(totals.exp, settings.currency)}</div>
+            <div className="text-sm text-rose-500 dark:text-rose-400">Despesas</div>
+            <div className="font-semibold text-zinc-800 dark:text-zinc-200">{fmtMoney(totals.exp, settings.currency)}</div>
           </div>
         </div>
-        <div className="border-t border-zinc-800 my-4" />
+        <div className="border-t border-zinc-200 dark:border-zinc-800 my-4" />
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <div className="text-xs text-zinc-400">Saldo Acumulado</div>
-            <div className="text-lg font-semibold text-cyan-400">{fmtMoney(accumulatedBalance, settings.currency)}</div>
+            <div className="text-xs text-zinc-500 dark:text-zinc-400">Saldo Acumulado</div>
+            <div className="text-lg font-semibold text-cyan-500 dark:text-cyan-400">{fmtMoney(accumulatedBalance, settings.currency)}</div>
           </div>
           <div className="text-right">
-            <div className="text-xs text-zinc-400">Projeção Final</div>
-            <div className="text-lg font-semibold text-purple-400">{fmtMoney(finalProjectedBalance, settings.currency)}</div>
+            <div className="text-xs text-zinc-500 dark:text-zinc-400">Projeção Final</div>
+            <div className="text-lg font-semibold text-purple-500 dark:text-purple-400">{fmtMoney(finalProjectedBalance, settings.currency)}</div>
           </div>
         </div>
       </div>

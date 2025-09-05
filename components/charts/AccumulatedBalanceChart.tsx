@@ -55,8 +55,8 @@ const AccumulatedBalanceChart: React.FC<AccumulatedBalanceChartProps> = ({ allOc
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-[#18181b] border border-[#3f3f46] rounded-lg p-3 text-sm text-zinc-200">
-          <p className="label text-zinc-400 mb-2">{`${label}`}</p>
+        <div className="bg-white dark:bg-[#18181b] border border-zinc-200 dark:border-[#3f3f46] rounded-lg p-3 text-sm text-zinc-800 dark:text-zinc-200">
+          <p className="label text-zinc-600 dark:text-zinc-400 mb-2">{`${label}`}</p>
           {payload.map((pld: any) => (
             <p key={pld.dataKey} style={{ color: pld.stroke || pld.fill }}>
               {`${pld.name}: `}
@@ -70,13 +70,15 @@ const AccumulatedBalanceChart: React.FC<AccumulatedBalanceChartProps> = ({ allOc
     }
     return null;
   };
+  
+  const axisStrokeColor = settings.dark ? "#71717a" : "#a1a1aa";
 
   return (
-    <div className="bg-zinc-900 rounded-2xl p-4 border border-zinc-800">
-      <h3 className="text-lg font-semibold mb-4 text-zinc-100">Evolução e Variação do Saldo</h3>
+    <div className="bg-white dark:bg-zinc-900 rounded-2xl p-4 border border-zinc-200 dark:border-zinc-800">
+      <h3 className="text-lg font-semibold mb-4 text-zinc-900 dark:text-zinc-100">Evolução e Variação do Saldo</h3>
       <ResponsiveContainer width="100%" height={300}>
         <ComposedChart data={data}>
-          <XAxis dataKey="month" stroke="#71717a" fontSize={12} />
+          <XAxis dataKey="month" stroke={axisStrokeColor} fontSize={12} />
           <YAxis 
             yAxisId="left"
             stroke="#a855f7" 

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Tab } from '../../types';
 // FIX: Import IconProps to strongly type the icon elements.
@@ -33,8 +32,8 @@ const TabButton: React.FC<TabButtonProps> = ({ icon, label, active, onClick }) =
       onClick={onClick}
       className={`flex flex-col items-center justify-center p-2 transition-colors w-[72px] h-14 ${
         active
-          ? "text-cyan-400"
-          : "text-zinc-400 hover:text-zinc-100"
+          ? "text-cyan-600 dark:text-cyan-400"
+          : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
       }`}
     >
       {React.cloneElement(icon, { size: 22 })}
@@ -48,7 +47,7 @@ const BottomNav: React.FC<BottomNavProps> = ({ activeTab, onTabChange, onAdd }) 
 
   return (
     <nav className="fixed bottom-4 inset-x-0 z-50 flex justify-center">
-        <div className="flex items-center p-2 rounded-full bg-zinc-900/80 backdrop-blur-lg border border-zinc-700/60 shadow-2xl">
+        <div className="flex items-center p-2 rounded-full bg-white/70 dark:bg-zinc-900/70 backdrop-blur-lg border border-zinc-300/80 dark:border-zinc-700/60 shadow-2xl">
             {leftItems.map(item => (
                 <TabButton 
                     key={item.tab}

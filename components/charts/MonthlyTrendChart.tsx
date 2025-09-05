@@ -41,14 +41,22 @@ const MonthlyTrendChart: React.FC<MonthlyTrendChartProps> = ({ allOccurrences, s
     return chartData;
   }, [allOccurrences, months, skips, cursor]);
 
+  const tooltipContentStyle = {
+    backgroundColor: settings.dark ? '#18181b' : '#ffffff',
+    border: `1px solid ${settings.dark ? '#3f3f46' : '#e4e4e7'}`,
+    borderRadius: '0.5rem',
+    color: settings.dark ? '#f4f4f5' : '#18181b',
+  };
+  const axisStrokeColor = settings.dark ? "#71717a" : "#a1a1aa";
+
   return (
-    <div className="bg-zinc-900 rounded-2xl p-4 border border-zinc-800">
-      <h3 className="text-lg font-semibold mb-4 text-zinc-100">Fluxo Mensal (Receitas x Despesas)</h3>
+    <div className="bg-white dark:bg-zinc-900 rounded-2xl p-4 border border-zinc-200 dark:border-zinc-800">
+      <h3 className="text-lg font-semibold mb-4 text-zinc-900 dark:text-zinc-100">Fluxo Mensal (Receitas x Despesas)</h3>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={data}>
-          <XAxis dataKey="month" stroke="#71717a" fontSize={12} />
-          <YAxis stroke="#71717a" fontSize={12} tickFormatter={(v: number) => fmtMoney(v, settings.currency)} />
-          <Tooltip contentStyle={{ backgroundColor: '#18181b', border: '1px solid #3f3f46', borderRadius: 8, color: '#f4f4f5' }} formatter={(v: number, n: string) => [fmtMoney(v, settings.currency), n]} />
+          <XAxis dataKey="month" stroke={axisStrokeColor} fontSize={12} />
+          <YAxis stroke={axisStrokeColor} fontSize={12} tickFormatter={(v: number) => fmtMoney(v, settings.currency)} />
+          <Tooltip contentStyle={tooltipContentStyle} formatter={(v: number, n: string) => [fmtMoney(v, settings.currency), n]} />
           <Legend />
           <Line type="monotone" dataKey="receitas" stroke="#10b981" name="Receitas" strokeWidth={2} />
           <Line type="monotone" dataKey="despesas" stroke="#ef4444" name="Despesas" strokeWidth={2} />

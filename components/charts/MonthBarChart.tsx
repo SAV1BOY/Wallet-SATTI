@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, Cell } from 'recharts';
 import { Settings } from '../../types';
@@ -16,9 +15,9 @@ const MonthBarChart: React.FC<MonthBarChartProps> = ({ totalIn, totalOut, settin
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-zinc-950 border border-zinc-700 rounded-lg p-3 text-sm shadow-lg">
-          <p className="label font-semibold text-zinc-100 mb-1">{label}</p>
-          <p className="text-zinc-100">
+        <div className="bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-700 rounded-lg p-3 text-sm shadow-lg">
+          <p className="label font-semibold text-zinc-900 dark:text-zinc-100 mb-1">{label}</p>
+          <p className="text-zinc-900 dark:text-zinc-100">
             <span>{payload[0].name} : </span>
             <span className="font-medium">{fmtMoney(payload[0].value, settings.currency)}</span>
           </p>
@@ -28,13 +27,15 @@ const MonthBarChart: React.FC<MonthBarChartProps> = ({ totalIn, totalOut, settin
     return null;
   };
 
+  const axisStrokeColor = settings.dark ? "#71717a" : "#a1a1aa";
+
   return (
-    <div className="bg-zinc-900 rounded-2xl p-4 border border-zinc-800">
-      <h3 className="text-lg font-semibold mb-4 text-zinc-100">Receitas x Despesas (mês atual)</h3>
+    <div className="bg-white dark:bg-zinc-900 rounded-2xl p-4 border border-zinc-200 dark:border-zinc-800">
+      <h3 className="text-lg font-semibold mb-4 text-zinc-900 dark:text-zinc-100">Receitas x Despesas (mês atual)</h3>
       <ResponsiveContainer width="100%" height={240}>
         <BarChart data={data}>
-          <XAxis dataKey="name" stroke="#71717a" fontSize={12} />
-          <YAxis stroke="#71717a" fontSize={12} tickFormatter={(v: number) => fmtMoney(v, settings.currency)} />
+          <XAxis dataKey="name" stroke={axisStrokeColor} fontSize={12} />
+          <YAxis stroke={axisStrokeColor} fontSize={12} tickFormatter={(v: number) => fmtMoney(v, settings.currency)} />
           <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(113, 113, 122, 0.2)' }} />
           <Bar dataKey="valor">
             {data.map((entry, index) => (<Cell key={`cell-${index}`} fill={entry.color} />))}
