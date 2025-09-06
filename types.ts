@@ -1,4 +1,5 @@
 
+
 export type Kind = 'receita' | 'despesa';
 
 export type Recurrence = 'none' | 'always' | 'parcelado';
@@ -91,4 +92,20 @@ export interface Action {
   payload?: any;
   title?: string;
   message: string;
+}
+
+export type ValueFilterOperator = 'gt' | 'lt' | 'eq';
+
+export interface ValueFilter {
+  operator: ValueFilterOperator | null;
+  value: number | null;
+}
+
+export interface TransactionFilters {
+  selectedCategories: string[];
+  valueFilter: ValueFilter;
+  dateFilter: {
+    startDate: string | null;
+    endDate: string | null;
+  };
 }

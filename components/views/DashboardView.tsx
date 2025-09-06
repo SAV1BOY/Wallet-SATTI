@@ -1,3 +1,4 @@
+
 import React, { useMemo } from 'react';
 import { Occurrence, Settings, SkipData, Category } from '../../types';
 import { isSameYM, parseDate, fmtMoney } from '../../utils/helpers';
@@ -5,6 +6,7 @@ import MonthBarChart from '../charts/MonthBarChart';
 import MonthlyTrendChart from '../charts/MonthlyTrendChart';
 import CategoryPieChart from '../charts/CategoryPieChart';
 import AccumulatedBalanceChart from '../charts/AccumulatedBalanceChart';
+import LazyLoad from '../ui/LazyLoad';
 
 interface DashboardViewProps {
   allOccurrences: Occurrence[];
@@ -40,16 +42,6 @@ const DashboardView: React.FC<DashboardViewProps> = ({ allOccurrences, cursor, s
     return balance;
   }, [allOccurrences, skips, cursor]);
 
-  const finalProjectedBalance = useMemo(() => {
-    let balance = 0;
-    allOccurrences
-      .filter(o => !skips[o.id])
-      .forEach(o => {
-        balance += o.kind === 'receita' ? o.value : -o.value;
-      });
-    return balance;
-  }, [allOccurrences, skips]);
-
   return (
     <div className="space-y-6">
       <div className="bg-white dark:bg-zinc-900 rounded-2xl p-4 border border-zinc-200 dark:border-zinc-800">
@@ -66,25 +58,29 @@ const DashboardView: React.FC<DashboardViewProps> = ({ allOccurrences, cursor, s
           </div>
         </div>
         <div className="border-t border-zinc-200 dark:border-zinc-800 my-4" />
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <div className="text-xs text-zinc-500 dark:text-zinc-400">Saldo Acumulado</div>
-            <div className="text-lg font-semibold text-cyan-500 dark:text-cyan-400">{fmtMoney(accumulatedBalance, settings.currency)}</div>
-          </div>
-          <div className="text-right">
-            <div className="text-xs text-zinc-500 dark:text-zinc-400">Projeção Final</div>
-            <div className="text-lg font-semibold text-purple-500 dark:text-purple-400">{fmtMoney(finalProjectedBalance, settings.currency)}</div>
-          </div>
+        <div className="text-center">
+          <div className="text-xs text-zinc-500 dark:text-zinc-400">Saldo Acumulado</div>
+          <div className="text-xl font-semibold text-cyan-500 dark:text-cyan-400">{fmtMoney(accumulatedBalance, settings.currency)}</div>
         </div>
       </div>
 
-      <MonthBarChart totalIn={totals.inc} totalOut={totals.exp} settings={settings} />
-      <MonthlyTrendChart allOccurrences={allOccurrences} skips={skips} settings={settings} cursor={cursor} />
-      <AccumulatedBalanceChart allOccurrences={allOccurrences} skips={skips} settings={settings} cursor={cursor} />
+      <LazyLoad>
+        <MonthBarChart totalIn={totals.inc} totalOut={totals.exp} settings={settings} />
+      </LazyLoad>
+      <LazyLoad>
+        <MonthlyTrendChart allOccurrences={allOccurrences} skips={skips} settings={settings} cursor={cursor} />
+      </LazyLoad>
+      <LazyLoad>
+        <AccumulatedBalanceChart allOccurrences={allOccurrences} skips={skips} settings={settings} cursor={cursor} />
+      </LazyLoad>
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <CategoryPieChart occurrences={occurrences} kind="receita" settings={settings} categories={categories} />
-        <CategoryPieChart occurrences={occurrences} kind="despesa" settings={settings} categories={categories} />
+        <LazyLoad>
+          <CategoryPieChart occurrences={occurrences} kind="receita" settings={settings} categories={categories} />
+        </LazyLoad>
+        <LazyLoad>
+          <CategoryPieChart occurrences={occurrences} kind="despesa" settings={settings} categories={categories} />
+        </LazyLoad>
       </div>
     </div>
   );

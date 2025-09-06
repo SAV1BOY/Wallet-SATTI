@@ -1,7 +1,10 @@
+
 import React, { useState, useMemo } from 'react';
-import { AppData, Occurrence, Settings, Category } from '../../types';
-import { isSameYM, parseDate, overdueStatus, fmtMoney } from '../../utils/helpers';
-import { IconSearch, IconCheck } from '../icons/Icon';
+import { AppData, Occurrence, Settings, Category, TransactionFilters, ValueFilter } from '../../types';
+import { isSameYM, parseDate } from '../../utils/helpers';
+import { IconSearch, IconFilter } from '../icons/Icon';
+import TransactionItem from '../entry/TransactionItem';
+import TransactionFilterModal from '../entry/TransactionFilterModal';
 
 interface TransactionsViewProps {
   allOccurrences: Occurrence[];
@@ -17,30 +20,89 @@ interface TransactionsViewProps {
 const TransactionsView: React.FC<TransactionsViewProps> = ({ allOccurrences, cursor, data, onSelect, onAdd, settings, onTogglePaid, categories }) => {
   const [tab, setTab] = useState<'todos' | 'receitas' | 'despesas'>("todos");
   const [searchQuery, setSearchQuery] = useState("");
+  const [showFilterModal, setShowFilterModal] = useState(false);
+  const [filters, setFilters] = useState<TransactionFilters>({
+    selectedCategories: [],
+    valueFilter: { operator: null, value: null },
+    dateFilter: { startDate: null, endDate: null },
+  });
 
   const occurrences = useMemo(() => {
-    return allOccurrences
-      .filter(o => isSameYM(parseDate(o.dueDate), cursor))
-      .filter(o => !data.skips?.[o.id])
-      .sort((a, b) => parseDate(a.dueDate).getTime() - parseDate(b.dueDate).getTime());
-  }, [allOccurrences, data.skips, cursor]);
+    const { startDate, endDate } = filters.dateFilter || {};
+    let result = allOccurrences
+      .filter(o => !data.skips?.[o.id]);
+
+    if (startDate || endDate) {
+        if (startDate) {
+            const start = parseDate(startDate);
+            start.setHours(0, 0, 0, 0);
+            result = result.filter(occ => parseDate(occ.dueDate) >= start);
+        }
+        if (endDate) {
+            const end = parseDate(endDate);
+            end.setHours(23, 59, 59, 999);
+            result = result.filter(occ => parseDate(occ.dueDate) <= end);
+        }
+    } else {
+        result = result.filter(o => isSameYM(parseDate(o.dueDate), cursor));
+    }
+    
+    return result.sort((a, b) => parseDate(a.dueDate).getTime() - parseDate(b.dueDate).getTime());
+  }, [allOccurrences, data.skips, cursor, filters.dateFilter]);
 
   const filtered = useMemo(() => {
     let result = occurrences;
+    
     if (tab === "receitas") result = result.filter(o => o.kind === "receita");
     if (tab === "despesas") result = result.filter(o => o.kind === "despesa");
+    
     if (searchQuery) {
+      const lowercasedQuery = searchQuery.toLowerCase();
       result = result.filter(o =>
-        o.description.toLowerCase().includes(searchQuery.toLowerCase())
+        o.description.toLowerCase().includes(lowercasedQuery)
       );
     }
+
+    if (filters.selectedCategories.length > 0) {
+      result = result.filter(o => filters.selectedCategories.includes(o.category));
+    }
+    
+    const { operator, value } = filters.valueFilter;
+    if (operator && value !== null && value > 0) {
+        result = result.filter(o => {
+            if (operator === 'gt') return o.value > value;
+            if (operator === 'lt') return o.value < value;
+            if (operator === 'eq') return o.value === value;
+            return true;
+        });
+    }
+
     return result;
-  }, [occurrences, tab, searchQuery]);
+  }, [occurrences, tab, searchQuery, filters]);
+
+  const categoryMap = useMemo(() => {
+    const map = new Map<string, Category>();
+    categories.receita.forEach(c => map.set(c.id, c));
+    categories.despesa.forEach(c => map.set(c.id, c));
+    return map;
+  }, [categories]);
+  
+  const handleApplyFilters = (newFilters: TransactionFilters) => {
+    setFilters(newFilters);
+    setShowFilterModal(false);
+  };
+
+  const areFiltersActive = useMemo(() => {
+    const { startDate, endDate } = filters.dateFilter || {};
+    return filters.selectedCategories.length > 0 
+        || (filters.valueFilter.operator !== null && filters.valueFilter.value !== null && filters.valueFilter.value > 0)
+        || !!startDate || !!endDate;
+  }, [filters]);
 
   return (
     <div>
-      <div className="mb-4">
-        <div className="relative">
+      <div className="flex gap-2 mb-4">
+        <div className="relative flex-grow">
           <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 dark:text-zinc-400" size={18} />
           <input
             type="text"
@@ -50,6 +112,18 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({ allOccurrences, cur
             className="w-full pl-10 pr-4 py-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 outline-none focus:border-cyan-500"
           />
         </div>
+        <button
+          onClick={() => setShowFilterModal(true)}
+          className={`relative flex-shrink-0 px-3 flex items-center justify-center rounded-xl border transition-colors ${
+              areFiltersActive
+                  ? 'bg-cyan-500/20 border-cyan-500 text-cyan-500'
+                  : 'bg-zinc-100 dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-600'
+          }`}
+          aria-label="Filtros avançados"
+      >
+          <IconFilter size={20} />
+          {areFiltersActive && <div className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-cyan-500"></div>}
+      </button>
       </div>
 
       <div className="flex gap-6 border-b border-zinc-200 dark:border-zinc-800 mb-4">
@@ -62,8 +136,8 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({ allOccurrences, cur
 
       {filtered.length === 0 ? (
         <div className="text-center py-16 text-zinc-500 dark:text-zinc-400">
-          <p className="mb-6">{searchQuery ? `Nenhum resultado para "${searchQuery}"` : `Não há ${tab === 'todos' ? 'lançamentos' : tab} neste mês`}</p>
-          {!searchQuery && (
+          <p className="mb-6">{searchQuery || areFiltersActive ? `Nenhum resultado para os filtros aplicados.` : `Não há ${tab === 'todos' ? 'lançamentos' : tab} neste mês`}</p>
+          {!searchQuery && !areFiltersActive && (
             <button onClick={onAdd} className="mx-auto px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white transition-colors">
               Novo Lançamento
             </button>
@@ -72,50 +146,31 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({ allOccurrences, cur
       ) : (
         <div className="space-y-1">
           {filtered.map((o) => {
-            const paid = !!data.payments[`paid:${o.id}`];
-            const category = categories[o.kind].find(cat => cat.id === o.category);
-            const isOverdue = overdueStatus(o.dueDate) === 'overdue';
-            const categoryColor = category ? `${category.color}20` : 'transparent';
+            const isPaid = !!data.payments[`paid:${o.id}`];
+            const category = categoryMap.get(o.category);
             
             return (
-              <div key={o.id} onClick={() => onSelect(o)} className="w-full text-left py-3 flex items-center justify-between hover:bg-zinc-200/50 dark:hover:bg-zinc-900/50 transition-colors cursor-pointer rounded-lg px-2 -mx-2">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full grid place-items-center text-xl flex-shrink-0" style={{ backgroundColor: categoryColor }}>
-                    <span>{category?.icon}</span>
-                  </div>
-                  <div>
-                    <div className="font-medium text-zinc-900 dark:text-zinc-100">{o.description}</div>
-                    <div className="text-xs text-zinc-500 dark:text-zinc-400 flex items-center gap-2">
-                      {parseDate(o.dueDate).toLocaleDateString("pt-BR")}
-                      {isOverdue && !paid && <span className="text-rose-400">• Vencido</span>}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4">
-                  <div className={`font-semibold text-right ${o.kind === "receita" ? "text-emerald-400" : "text-rose-400"}`}>
-                    {o.kind === "receita" ? "+ " : "- "}{fmtMoney(o.value, settings.currency)}
-                  </div>
-                  <button
-                      onClick={(e) => {
-                          e.stopPropagation();
-                          onTogglePaid(o);
-                      }}
-                      className={`w-7 h-7 flex-shrink-0 rounded-full border-2 grid place-items-center transition-all duration-200 
-                      ${paid 
-                          ? 'bg-emerald-500 border-emerald-400 text-white' 
-                          : 'bg-transparent border-zinc-400 dark:border-zinc-600 text-zinc-400 dark:text-zinc-600 hover:border-zinc-500 dark:hover:border-zinc-400 hover:text-zinc-500 dark:hover:text-zinc-400'
-                      }`}
-                      aria-label={paid ? "Marcar como não pago" : (o.kind === 'receita' ? "Marcar como recebido" : "Marcar como pago")}
-                  >
-                      <IconCheck size={16} className={`transition-transform duration-200 ${paid ? 'scale-100' : 'scale-0'}`} />
-                  </button>
-                </div>
-              </div>
+              <TransactionItem
+                key={o.id}
+                occurrence={o}
+                isPaid={isPaid}
+                category={category}
+                settings={settings}
+                onSelect={onSelect}
+                onTogglePaid={onTogglePaid}
+              />
             );
           })}
         </div>
       )}
+
+      <TransactionFilterModal
+        open={showFilterModal}
+        onClose={() => setShowFilterModal(false)}
+        onApply={handleApplyFilters}
+        categories={categories}
+        initialFilters={filters}
+      />
     </div>
   );
 };

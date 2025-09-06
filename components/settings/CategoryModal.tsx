@@ -15,6 +15,11 @@ const colorPalette = [
     '#d946ef', '#ec4899', '#f43f5e', '#78716c'
 ];
 
+const emojiPalette = [
+    '💼', '💻', '🏢', '📈', '💰', '🍽️', '🚗', '🏠', '🏥', '📚', '🎬', '🐷', '📊', '🧾', '💸', '✈️',
+    '🛒', '🎁', '🎓', '💡', '🔧', '❤️', '🐾', '👶', '📱', '👕', '💄', '🎉', '🍕', '☕', '💪', '🥎'
+];
+
 const CategoryModal: React.FC<CategoryModalProps> = ({ open, onClose, onSave, initial }) => {
   const [label, setLabel] = useState('');
   const [icon, setIcon] = useState('');
@@ -28,7 +33,7 @@ const CategoryModal: React.FC<CategoryModalProps> = ({ open, onClose, onSave, in
         setColor(initial.color || colorPalette[0]);
       } else {
         setLabel('');
-        setIcon('');
+        setIcon(emojiPalette[0]);
         setColor(colorPalette[Math.floor(Math.random() * colorPalette.length)]);
       }
     }
@@ -61,14 +66,18 @@ const CategoryModal: React.FC<CategoryModalProps> = ({ open, onClose, onSave, in
         </div>
 
         <div>
-          <label className="text-sm text-zinc-500 dark:text-zinc-400 mb-1 block">Ícone (Emoji)</label>
-          <input
-            className="w-full px-3 py-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 outline-none focus:border-cyan-500"
-            value={icon}
-            onChange={(e) => setIcon(e.target.value)}
-            placeholder="Ex: 🛒"
-            maxLength={2}
-          />
+          <label className="text-sm text-zinc-500 dark:text-zinc-400 mb-2 block">Ícone (Emoji)</label>
+          <div className="grid grid-cols-8 gap-2 bg-zinc-100 dark:bg-zinc-800 p-3 rounded-xl">
+              {emojiPalette.map(emoji => (
+                  <button 
+                    key={emoji} 
+                    onClick={() => setIcon(emoji)} 
+                    className={`text-2xl w-10 h-10 rounded-lg grid place-items-center transition-all transform hover:scale-110 ${icon === emoji ? 'bg-cyan-500/30 ring-2 ring-cyan-500' : 'bg-transparent hover:bg-zinc-200 dark:hover:bg-zinc-700'}`}
+                  >
+                      {emoji}
+                  </button>
+              ))}
+          </div>
         </div>
         
         <div>

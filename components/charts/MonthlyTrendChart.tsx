@@ -1,5 +1,6 @@
+
 import React, { useMemo } from 'react';
-import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, Legend } from 'recharts';
+import { ComposedChart, Area, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import { Occurrence, Settings, SkipData } from '../../types';
 import { addMonthsSafe, parseDate, isSameYM, shortMonthLabel, fmtMoney } from '../../utils/helpers';
 
@@ -53,15 +54,30 @@ const MonthlyTrendChart: React.FC<MonthlyTrendChartProps> = ({ allOccurrences, s
     <div className="bg-white dark:bg-zinc-900 rounded-2xl p-4 border border-zinc-200 dark:border-zinc-800">
       <h3 className="text-lg font-semibold mb-4 text-zinc-900 dark:text-zinc-100">Fluxo Mensal (Receitas x Despesas)</h3>
       <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={data}>
+        <ComposedChart data={data}>
+          <defs>
+            <linearGradient id="colorReceitas" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#22c55e" stopOpacity={0.8}/>
+              <stop offset="95%" stopColor="#22c55e" stopOpacity={0}/>
+            </linearGradient>
+            <linearGradient id="colorDespesas" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#f43f5e" stopOpacity={0.8}/>
+              <stop offset="95%" stopColor="#f43f5e" stopOpacity={0}/>
+            </linearGradient>
+            <linearGradient id="colorSaldo" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.4}/>
+              <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+            </linearGradient>
+          </defs>
           <XAxis dataKey="month" stroke={axisStrokeColor} fontSize={12} />
           <YAxis stroke={axisStrokeColor} fontSize={12} tickFormatter={(v: number) => fmtMoney(v, settings.currency)} />
-          <Tooltip contentStyle={tooltipContentStyle} formatter={(v: number, n: string) => [fmtMoney(v, settings.currency), n]} />
+          <Tooltip contentStyle={tooltipContentStyle} formatter={(v: number, n: string) => [fmtMoney(v, settings.currency), n]} cursor={{ stroke: axisStrokeColor, strokeDasharray: '3 3' }} />
           <Legend />
-          <Line type="monotone" dataKey="receitas" stroke="#10b981" name="Receitas" strokeWidth={2} />
-          <Line type="monotone" dataKey="despesas" stroke="#ef4444" name="Despesas" strokeWidth={2} />
-          <Line type="monotone" dataKey="saldo" stroke="#06b6d4" name="Saldo" strokeWidth={2} />
-        </LineChart>
+          <Area type="monotone" dataKey="receitas" stroke="#22c55e" fill="url(#colorReceitas)" name="Receitas" strokeWidth={2} activeDot={{ r: 6 }} />
+          <Area type="monotone" dataKey="despesas" stroke="#f43f5e" fill="url(#colorDespesas)" name="Despesas" strokeWidth={2} activeDot={{ r: 6 }} />
+          <Area type="monotone" dataKey="saldo" fill="url(#colorSaldo)" stroke="none" />
+          <Line type="monotone" dataKey="saldo" stroke="#3b82f6" name="Saldo" strokeWidth={2} dot={false} activeDot={{ r: 6 }} />
+        </ComposedChart>
       </ResponsiveContainer>
     </div>
   );

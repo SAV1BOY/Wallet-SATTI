@@ -1,5 +1,6 @@
+
 import React, { useMemo } from 'react';
-import { ComposedChart, Line, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, Legend, Cell } from 'recharts';
+import { ComposedChart, Line, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, Legend, Cell, Area } from 'recharts';
 import { Occurrence, Settings, SkipData } from '../../types';
 import { addMonthsSafe, parseDate, isSameYM, shortMonthLabel, fmtMoney } from '../../utils/helpers';
 
@@ -78,6 +79,20 @@ const AccumulatedBalanceChart: React.FC<AccumulatedBalanceChartProps> = ({ allOc
       <h3 className="text-lg font-semibold mb-4 text-zinc-900 dark:text-zinc-100">Evolução e Variação do Saldo</h3>
       <ResponsiveContainer width="100%" height={300}>
         <ComposedChart data={data}>
+          <defs>
+            <linearGradient id="gradientVariationPositive" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#10b981" stopOpacity={0.8}/>
+                <stop offset="95%" stopColor="#10b981" stopOpacity={0.2}/>
+            </linearGradient>
+            <linearGradient id="gradientVariationNegative" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#ef4444" stopOpacity={0.8}/>
+                <stop offset="95%" stopColor="#ef4444" stopOpacity={0.2}/>
+            </linearGradient>
+            <linearGradient id="gradientSaldo" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#a855f7" stopOpacity={0.4}/>
+                <stop offset="95%" stopColor="#a855f7" stopOpacity={0}/>
+            </linearGradient>
+          </defs>
           <XAxis dataKey="month" stroke={axisStrokeColor} fontSize={12} />
           <YAxis 
             yAxisId="left"
@@ -96,9 +111,10 @@ const AccumulatedBalanceChart: React.FC<AccumulatedBalanceChartProps> = ({ allOc
           <Legend />
           <Bar yAxisId="right" dataKey="Variação Mensal (%)" name="Variação Mensal (%)">
             {data.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry['Variação Mensal (%)'] >= 0 ? '#10b981' : '#ef4444'} />
+                <Cell key={`cell-${index}`} fill={entry['Variação Mensal (%)'] >= 0 ? 'url(#gradientVariationPositive)' : 'url(#gradientVariationNegative)'} />
             ))}
           </Bar>
+          <Area yAxisId="left" type="monotone" dataKey="Saldo Acumulado" fill="url(#gradientSaldo)" stroke="none" />
           <Line yAxisId="left" type="monotone" dataKey="Saldo Acumulado" name="Saldo Acumulado" stroke="#a855f7" strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 6 }}/>
         </ComposedChart>
       </ResponsiveContainer>

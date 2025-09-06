@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, Cell } from 'recharts';
 import { Settings } from '../../types';
@@ -10,7 +11,7 @@ interface MonthBarChartProps {
 }
 
 const MonthBarChart: React.FC<MonthBarChartProps> = ({ totalIn, totalOut, settings }) => {
-  const data = [{ name: 'Receitas', valor: totalIn, color: '#10b981' }, { name: 'Despesas', valor: totalOut, color: '#ef4444' }];
+  const data = [{ name: 'Receitas', valor: totalIn }, { name: 'Despesas', valor: totalOut }];
 
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
@@ -34,11 +35,21 @@ const MonthBarChart: React.FC<MonthBarChartProps> = ({ totalIn, totalOut, settin
       <h3 className="text-lg font-semibold mb-4 text-zinc-900 dark:text-zinc-100">Receitas x Despesas (mês atual)</h3>
       <ResponsiveContainer width="100%" height={240}>
         <BarChart data={data}>
+          <defs>
+            <linearGradient id="gradientReceitasBar" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#10b981" stopOpacity={0.8}/>
+              <stop offset="95%" stopColor="#10b981" stopOpacity={0.2}/>
+            </linearGradient>
+            <linearGradient id="gradientDespesasBar" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#ef4444" stopOpacity={0.8}/>
+              <stop offset="95%" stopColor="#ef4444" stopOpacity={0.2}/>
+            </linearGradient>
+          </defs>
           <XAxis dataKey="name" stroke={axisStrokeColor} fontSize={12} />
           <YAxis stroke={axisStrokeColor} fontSize={12} tickFormatter={(v: number) => fmtMoney(v, settings.currency)} />
           <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(113, 113, 122, 0.2)' }} />
           <Bar dataKey="valor">
-            {data.map((entry, index) => (<Cell key={`cell-${index}`} fill={entry.color} />))}
+            {data.map((entry, index) => (<Cell key={`cell-${index}`} fill={index === 0 ? 'url(#gradientReceitasBar)' : 'url(#gradientDespesasBar)'} />))}
           </Bar>
         </BarChart>
       </ResponsiveContainer>
