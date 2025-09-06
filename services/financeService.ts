@@ -5,43 +5,12 @@ import { parseDate, addMonthsSafe, dateISO, pad } from '../utils/helpers';
 import { DEFAULT_CATEGORIES } from '../constants';
 
 export function getInitialData(): AppData {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = pad(now.getMonth() + 1);
-  const monthStr = `${year}-${month}`;
-
   return {
-    entries: [
-      {
-        id: 'sample-salary', kind: 'receita', description: 'Salário', value: 7500,
-        dueDate: `${year}-${month}-05`, recurrence: 'always', frequency: 'monthly',
-        category: 'salary', createdAt: '2024-01-01T00:00:00.000Z'
-      },
-      {
-        id: 'sample-rent', kind: 'despesa', description: 'Aluguel', value: 1500,
-        dueDate: `${year}-${month}-10`, recurrence: 'always', frequency: 'monthly',
-        category: 'housing', createdAt: '2024-01-01T00:00:00.000Z'
-      },
-      {
-        id: 'sample-groceries', kind: 'despesa', description: 'Supermercado', value: 1200,
-        dueDate: `${year}-${month}-01`, recurrence: 'always', frequency: 'monthly',
-        category: 'food', createdAt: '2024-01-01T00:00:00.000Z'
-      },
-      {
-        id: 'sample-credit-card', kind: 'despesa', description: 'Cartão de Crédito', value: 2000,
-        dueDate: `${year}-${month}-10`, recurrence: 'always', frequency: 'monthly',
-        category: 'other_expense', createdAt: '2024-01-01T00:00:00.000Z'
-      }
-    ],
+    entries: [],
     payments: {},
     skips: {},
     settings: { dark: true, email: "", currency: "BRL" },
-    budgets: [
-      { categoryId: 'food', amount: 1000, month: monthStr },
-      { categoryId: 'transport', amount: 300, month: monthStr },
-      { categoryId: 'entertainment', amount: 250, month: monthStr },
-      { categoryId: 'housing', amount: 2500, month: monthStr },
-    ],
+    budgets: [],
     savingsGoals: [],
     categories: DEFAULT_CATEGORIES,
   };

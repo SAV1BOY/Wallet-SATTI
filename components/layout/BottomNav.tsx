@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Tab } from '../../types';
 // FIX: Import IconProps to strongly type the icon elements.
@@ -16,18 +17,19 @@ interface TabButtonProps {
     label: string;
     active: boolean;
     onClick: () => void;
+    "data-tour-id"?: string;
 }
 
 const navItems = [
-  { tab: 'dashboard' as Tab, label: 'Painel', icon: <IconChart /> },
-  { tab: 'transactions' as Tab, label: 'Contas', icon: <IconList /> },
-  { tab: 'savings' as Tab, label: 'Metas', icon: <IconTrophy /> },
-  { tab: 'budgets' as Tab, label: 'Orçar', icon: <IconWallet /> },
-  { tab: 'reports' as Tab, label: 'Dados', icon: <IconPie /> },
-  { tab: 'settings' as Tab, label: 'Opções', icon: <IconSettings /> },
+  { tab: 'dashboard' as Tab, label: 'Painel', icon: <IconChart />, tourId: 'dashboard-tab' },
+  { tab: 'transactions' as Tab, label: 'Contas', icon: <IconList />, tourId: 'transactions-tab' },
+  { tab: 'savings' as Tab, label: 'Metas', icon: <IconTrophy />, tourId: 'savings-tab' },
+  { tab: 'budgets' as Tab, label: 'Orçar', icon: <IconWallet />, tourId: 'budgets-tab' },
+  { tab: 'reports' as Tab, label: 'Dados', icon: <IconPie />, tourId: 'reports-tab' },
+  { tab: 'settings' as Tab, label: 'Opções', icon: <IconSettings />, tourId: 'settings-tab' },
 ];
 
-const TabButton: React.FC<TabButtonProps> = ({ icon, label, active, onClick }) => (
+const TabButton: React.FC<TabButtonProps> = ({ icon, label, active, onClick, "data-tour-id": dataTourId }) => (
     <button
       onClick={onClick}
       className={`relative z-10 flex flex-col items-center justify-center p-2 w-[72px] h-14 transition-colors duration-300 ${
@@ -35,6 +37,7 @@ const TabButton: React.FC<TabButtonProps> = ({ icon, label, active, onClick }) =
           ? "text-cyan-600 dark:text-cyan-300"
           : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
       }`}
+      data-tour-id={dataTourId}
     >
       {React.cloneElement(icon, { size: 22 })}
       <span className={`text-xs mt-1 transition-all ${active ? 'font-semibold' : 'font-medium'}`}>{label}</span>
@@ -68,6 +71,7 @@ const BottomNav: React.FC<BottomNavProps> = ({ activeTab, onTabChange, onAdd }) 
                     label={item.label}
                     active={activeTab === item.tab}
                     onClick={() => onTabChange(item.tab)}
+                    data-tour-id={item.tourId}
                 />
             ))}
             
@@ -76,6 +80,7 @@ const BottomNav: React.FC<BottomNavProps> = ({ activeTab, onTabChange, onAdd }) 
                 onClick={onAdd} 
                 className="relative z-10 w-14 h-14 rounded-full bg-cyan-600 hover:bg-cyan-500 text-white grid place-items-center shadow-lg transition-colors"
                 aria-label="Adicionar novo lançamento"
+                data-tour-id="add-button"
               >
                   <IconPlus size={28} />
               </button>
@@ -88,6 +93,7 @@ const BottomNav: React.FC<BottomNavProps> = ({ activeTab, onTabChange, onAdd }) 
                     label={item.label}
                     active={activeTab === item.tab}
                     onClick={() => onTabChange(item.tab)}
+                    data-tour-id={item.tourId}
                 />
             ))}
         </div>

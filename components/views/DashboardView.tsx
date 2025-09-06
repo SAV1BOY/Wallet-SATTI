@@ -44,7 +44,7 @@ const DashboardView: React.FC<DashboardViewProps> = ({ allOccurrences, cursor, s
 
   return (
     <div className="space-y-6">
-      <div className="bg-white dark:bg-zinc-900 rounded-2xl p-4 border border-zinc-200 dark:border-zinc-800">
+      <div className="bg-white dark:bg-zinc-900 rounded-2xl p-4 border border-zinc-200 dark:border-zinc-800" data-tour-id="dashboard-balance-card">
         <div className="text-sm text-zinc-500 dark:text-zinc-400 mb-1">Balanço do mês</div>
         <div className="text-3xl font-bold my-1 text-zinc-900 dark:text-zinc-100">{fmtMoney(totals.bal, settings.currency)}</div>
         <div className="grid grid-cols-2 gap-4 mt-2">

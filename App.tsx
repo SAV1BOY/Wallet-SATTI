@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { AppData, Occurrence, Entry, Tab, Action, Budget, SavingsGoal, Category, Kind } from './types';
 import { getInitialData, getAllOccurrences, getEmptyData } from './services/financeService';
-import { addMonthsSafe, monthLabel, uid, pad, dateISO } from './utils/helpers';
+import { addMonthsSafe, monthLabel, uid, pad, dateISO, storage } from './utils/helpers';
 
 import Header from './components/layout/Header';
 import BottomNav from './components/layout/BottomNav';
@@ -20,23 +20,7 @@ import EditBudgetsModal from './components/budget/EditBudgetsModal';
 import GoalModal from './components/savings/GoalModal';
 import AddToSavingsModal from './components/savings/AddToSavingsModal';
 import CategoryModal from './components/settings/CategoryModal';
-
-const storage = {
-  data: null as AppData | null,
-  getItem: function(key: string): string | null {
-    if (this.data === null) {
-        this.data = getInitialData();
-    }
-    return this.data ? JSON.stringify(this.data) : null;
-  },
-  setItem: function(key: string, value: string) {
-    try {
-      this.data = JSON.parse(value);
-    } catch (e) {
-      console.error("Failed to parse storage data:", e);
-    }
-  }
-};
+import OnboardingModal from './components/onboarding/OnboardingModal';
 
 
 export default function App() {
@@ -46,7 +30,7 @@ export default function App() {
       if (raw) {
         const parsed = JSON.parse(raw);
         // Migration for users without categories data
-        if (!parsed.categories) {
+        if (!parsed.categories || parsed.categories.receita.length === 0) {
           return { ...parsed, categories: getInitialData().categories };
         }
         return parsed;
@@ -76,6 +60,15 @@ export default function App() {
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [editingCategory, setEditingCategory] = useState<{ category: Category; kind: Kind } | null>(null);
   const [categoryKindToAdd, setCategoryKindToAdd] = useState<Kind | null>(null);
+  
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
+  useEffect(() => {
+    const onboardingComplete = storage.getItem('onboardingComplete');
+    if (!onboardingComplete) {
+      setShowOnboarding(true);
+    }
+  }, []);
 
   useEffect(() => {
     try {
@@ -212,7 +205,7 @@ export default function App() {
       return {
         ...emptyData,
         settings: d.settings,
-        categories: d.categories,
+        categories: getInitialData().categories,
       };
     });
   }, []);
@@ -283,8 +276,15 @@ export default function App() {
       }
   };
 
+  const handleOnboardingComplete = () => {
+    storage.setItem('onboardingComplete', 'true');
+    setShowOnboarding(false);
+  };
+
   return (
     <div className="min-h-screen bg-zinc-100 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 pb-28">
+      <OnboardingModal open={showOnboarding} onComplete={handleOnboardingComplete} />
+      
       {activeTab === 'settings' || activeTab === 'reports' ? (
         <header className="sticky top-0 z-40 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-lg border-b border-zinc-200 dark:border-zinc-800">
           <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-center">

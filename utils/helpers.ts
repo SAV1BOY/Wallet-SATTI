@@ -42,3 +42,21 @@ export function overdueStatus(isoDate: string): 'overdue' | 'ontime' {
   today.setHours(0, 0, 0, 0);
   return due < today ? "overdue" : "ontime";
 }
+
+export const storage = {
+  getItem: function(key: string): string | null {
+    try {
+      return localStorage.getItem(key);
+    } catch (e) {
+      console.error("Failed to read from localStorage:", e);
+      return null;
+    }
+  },
+  setItem: function(key: string, value: string) {
+    try {
+      localStorage.setItem(key, value);
+    } catch (e) {
+      console.error("Failed to write to localStorage:", e);
+    }
+  }
+};
