@@ -42,6 +42,13 @@ const DashboardView: React.FC<DashboardViewProps> = ({ allOccurrences, cursor, s
     return balance;
   }, [allOccurrences, skips, cursor]);
 
+  const balanceColorClass =
+    accumulatedBalance > 0
+      ? 'text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-green-500 dark:from-emerald-400 dark:to-green-400'
+      : accumulatedBalance < 0
+      ? 'text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-red-500 dark:from-rose-400 dark:to-red-400'
+      : 'text-zinc-500 dark:text-zinc-400';
+
   return (
     <div className="space-y-6">
       <div className="bg-white dark:bg-zinc-900 rounded-2xl p-4 border border-zinc-200 dark:border-zinc-800" data-tour-id="dashboard-balance-card">
@@ -60,7 +67,7 @@ const DashboardView: React.FC<DashboardViewProps> = ({ allOccurrences, cursor, s
         <div className="border-t border-zinc-200 dark:border-zinc-800 my-4" />
         <div className="text-center">
           <div className="text-xs text-zinc-500 dark:text-zinc-400">Saldo Acumulado</div>
-          <div className="text-xl font-semibold text-cyan-500 dark:text-cyan-400">{fmtMoney(accumulatedBalance, settings.currency)}</div>
+          <div className={`text-xl font-semibold ${balanceColorClass}`}>{fmtMoney(accumulatedBalance, settings.currency)}</div>
         </div>
       </div>
 

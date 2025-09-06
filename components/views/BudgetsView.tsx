@@ -62,6 +62,7 @@ const BudgetsView: React.FC<BudgetsViewProps> = ({ allOccurrences, cursor, data,
     const getProgressBarClasses = (percentage: number) => {
         if (percentage > 100) return 'bg-gradient-to-r from-rose-500 to-red-600';
         if (percentage > 80) return 'bg-gradient-to-r from-amber-400 to-orange-500';
+        if (percentage > 50) return 'bg-gradient-to-r from-lime-400 to-yellow-500';
         return 'bg-gradient-to-r from-emerald-400 to-cyan-500';
     };
 
@@ -96,19 +97,19 @@ const BudgetsView: React.FC<BudgetsViewProps> = ({ allOccurrences, cursor, data,
             <div className="space-y-4">
                 {budgetData.map(item => (
                     <div key={item.id} className="bg-white dark:bg-zinc-900 rounded-2xl p-4 border border-zinc-200 dark:border-zinc-800">
-                        <div className="flex justify-between items-center mb-3">
+                        <div className="flex justify-between items-start mb-2">
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 rounded-xl grid place-items-center text-xl flex-shrink-0" style={{ backgroundColor: `${item.color}20` }}>
                                     <span>{item.icon}</span>
                                 </div>
-                                <div>
-                                    <div className="font-semibold text-zinc-900 dark:text-zinc-100">{item.label}</div>
-                                    <div className="text-sm">
-                                        {item.remaining >= 0 ?
-                                            <span className="text-zinc-500 dark:text-zinc-400">{fmtMoney(item.remaining, settings.currency)} restantes</span> :
-                                            <span className="text-rose-500 dark:text-rose-400">Estourado em {fmtMoney(Math.abs(item.remaining), settings.currency)}</span>
-                                        }
-                                    </div>
+                                <div className="font-semibold text-zinc-900 dark:text-zinc-100">{item.label}</div>
+                            </div>
+                            <div className="text-right flex-shrink-0 ml-2">
+                                <div className={`text-lg font-bold ${item.remaining >= 0 ? 'text-zinc-800 dark:text-zinc-200' : 'text-rose-500'}`}>
+                                    {fmtMoney(item.remaining, settings.currency)}
+                                </div>
+                                <div className="text-xs text-zinc-500 dark:text-zinc-400">
+                                    {item.remaining >= 0 ? 'Restante' : 'Estourado'}
                                 </div>
                             </div>
                         </div>
@@ -121,10 +122,7 @@ const BudgetsView: React.FC<BudgetsViewProps> = ({ allOccurrences, cursor, data,
                         </div>
                         <div className="text-sm text-zinc-500 dark:text-zinc-400 flex justify-between mt-1.5">
                             <span className="font-medium text-zinc-800 dark:text-zinc-200">{fmtMoney(item.spent, settings.currency)}</span>
-                            <span>
-                                <span className="font-medium">{item.percentage.toFixed(0)}%</span>
-                                <span className="text-xs"> de {fmtMoney(item.budgeted, settings.currency)}</span>
-                            </span>
+                            <span>de {fmtMoney(item.budgeted, settings.currency)} ({item.percentage.toFixed(0)}%)</span>
                         </div>
                     </div>
                 ))}
