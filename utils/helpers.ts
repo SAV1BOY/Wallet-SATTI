@@ -1,22 +1,38 @@
-
 import { Currency } from '../types';
 
-const CURRENCY_FORMATTERS: { [key in Currency]: Intl.NumberFormat } = {
-  BRL: new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }),
-  USD: new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }),
-  EUR: new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }),
+export const LOCALE_MAP: { [key: string]: string } = {
+  pt: 'pt-BR',
+  en: 'en-US',
+  es: 'es-ES'
 };
 
-export const fmtMoney = (n: number, currency: Currency = 'BRL') => {
-    const formatter = CURRENCY_FORMATTERS[currency] || CURRENCY_FORMATTERS.BRL;
+const CURRENCY_FORMATTERS: { [key: string]: Intl.NumberFormat } = {};
+
+export const fmtMoney = (n: number, currency: Currency = 'BRL', lang: string = 'pt') => {
+    const locale = LOCALE_MAP[lang] || 'pt-BR';
+    const formatterKey = `${locale}_${currency}`;
+    
+    if (!CURRENCY_FORMATTERS[formatterKey]) {
+        CURRENCY_FORMATTERS[formatterKey] = new Intl.NumberFormat(locale, { style: "currency", currency: currency });
+    }
+    const formatter = CURRENCY_FORMATTERS[formatterKey];
     return formatter.format(n || 0);
 };
 
 export const pad = (n: number) => (n < 10 ? `0${n}` : `${n}`);
 
 export const isSameYM = (a: Date, b: Date) => a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth();
-export const monthLabel = (d: Date) => d.toLocaleDateString("pt-BR", { month: "long", year: "numeric" });
-export const shortMonthLabel = (d: Date) => d.toLocaleDateString("pt-BR", { month: "short" });
+
+export const monthLabel = (d: Date, lang: string = 'pt') => {
+    const locale = LOCALE_MAP[lang] || 'pt-BR';
+    return d.toLocaleDateString(locale, { month: "long", year: "numeric", timeZone: 'UTC' });
+};
+
+export const shortMonthLabel = (d: Date, lang: string = 'pt') => {
+    const locale = LOCALE_MAP[lang] || 'pt-BR';
+    return d.toLocaleDateString(locale, { month: "short", timeZone: 'UTC' });
+};
+
 export const dateISO = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 
 export const parseDate = (s: string) => {

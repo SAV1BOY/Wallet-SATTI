@@ -1,5 +1,4 @@
 
-
 import { Entry, Occurrence, Frequency, AppData } from '../types';
 import { parseDate, addMonthsSafe, dateISO, pad } from '../utils/helpers';
 import { DEFAULT_CATEGORIES } from '../constants';
@@ -9,7 +8,7 @@ export function getInitialData(): AppData {
     entries: [],
     payments: {},
     skips: {},
-    settings: { dark: true, email: "", currency: "BRL" },
+    settings: { dark: true, email: "", currency: "BRL", language: "pt" },
     budgets: [],
     savingsGoals: [],
     categories: DEFAULT_CATEGORIES,
@@ -21,7 +20,7 @@ export function getEmptyData(): AppData {
     entries: [],
     payments: {},
     skips: {},
-    settings: { dark: true, email: "", currency: "BRL" },
+    settings: { dark: true, email: "", currency: "BRL", language: "pt" },
     budgets: [],
     savingsGoals: [],
     categories: { receita: [], despesa: [] },

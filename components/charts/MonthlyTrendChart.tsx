@@ -3,6 +3,7 @@ import React, { useMemo } from 'react';
 import { ComposedChart, Area, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import { Occurrence, Settings, SkipData } from '../../types';
 import { addMonthsSafe, parseDate, isSameYM, shortMonthLabel, fmtMoney } from '../../utils/helpers';
+import { useLanguage } from '../LanguageProvider';
 
 interface MonthlyTrendChartProps {
   allOccurrences: Occurrence[];
@@ -13,6 +14,8 @@ interface MonthlyTrendChartProps {
 }
 
 const MonthlyTrendChart: React.FC<MonthlyTrendChartProps> = ({ allOccurrences, skips, settings, cursor, months = 6 }) => {
+  const { t, locale } = useLanguage();
+
   const data = useMemo(() => {
     const chartData = [];
     const occurrencesToConsider = allOccurrences.filter(occ => !skips[occ.id]);
@@ -33,14 +36,14 @@ const MonthlyTrendChart: React.FC<MonthlyTrendChartProps> = ({ allOccurrences, s
       const monthBalance = income - expenses;
 
       chartData.push({ 
-        month: shortMonthLabel(monthDate), 
-        receitas: income, 
-        despesas: expenses, 
-        saldo: monthBalance,
+        month: shortMonthLabel(monthDate, locale), 
+        income, 
+        expenses, 
+        balance: monthBalance,
       });
     }
     return chartData;
-  }, [allOccurrences, months, skips, cursor]);
+  }, [allOccurrences, months, skips, cursor, locale]);
 
   const tooltipContentStyle = {
     backgroundColor: settings.dark ? '#18181b' : '#ffffff',
@@ -52,7 +55,7 @@ const MonthlyTrendChart: React.FC<MonthlyTrendChartProps> = ({ allOccurrences, s
 
   return (
     <div className="bg-white dark:bg-zinc-900 rounded-2xl p-4 border border-zinc-200 dark:border-zinc-800">
-      <h3 className="text-lg font-semibold mb-4 text-zinc-900 dark:text-zinc-100">Fluxo Mensal (Receitas x Despesas)</h3>
+      <h3 className="text-lg font-semibold mb-4 text-zinc-900 dark:text-zinc-100">{t('dashboard.monthlyFlow')}</h3>
       <ResponsiveContainer width="100%" height={300}>
         <ComposedChart data={data}>
           <defs>
@@ -70,13 +73,13 @@ const MonthlyTrendChart: React.FC<MonthlyTrendChartProps> = ({ allOccurrences, s
             </linearGradient>
           </defs>
           <XAxis dataKey="month" stroke={axisStrokeColor} fontSize={12} />
-          <YAxis stroke={axisStrokeColor} fontSize={12} tickFormatter={(v: number) => fmtMoney(v, settings.currency)} />
-          <Tooltip contentStyle={tooltipContentStyle} formatter={(v: number, n: string) => [fmtMoney(v, settings.currency), n]} cursor={{ stroke: axisStrokeColor, strokeDasharray: '3 3' }} />
+          <YAxis stroke={axisStrokeColor} fontSize={12} tickFormatter={(v: number) => fmtMoney(v, settings.currency, locale)} />
+          <Tooltip contentStyle={tooltipContentStyle} formatter={(v: number, n: string) => [fmtMoney(v, settings.currency, locale), n]} cursor={{ stroke: axisStrokeColor, strokeDasharray: '3 3' }} />
           <Legend />
-          <Area type="monotone" dataKey="receitas" stroke="#22c55e" fill="url(#colorReceitas)" name="Receitas" strokeWidth={2} activeDot={{ r: 6 }} />
-          <Area type="monotone" dataKey="despesas" stroke="#f43f5e" fill="url(#colorDespesas)" name="Despesas" strokeWidth={2} activeDot={{ r: 6 }} />
-          <Area type="monotone" dataKey="saldo" fill="url(#colorSaldo)" stroke="none" />
-          <Line type="monotone" dataKey="saldo" stroke="#3b82f6" name="Saldo" strokeWidth={2} dot={false} activeDot={{ r: 6 }} />
+          <Area type="monotone" dataKey="income" stroke="#22c55e" fill="url(#colorReceitas)" name={t('charts.legend.income')} strokeWidth={2} activeDot={{ r: 6 }} />
+          <Area type="monotone" dataKey="expenses" stroke="#f43f5e" fill="url(#colorDespesas)" name={t('charts.legend.expenses')} strokeWidth={2} activeDot={{ r: 6 }} />
+          <Area type="monotone" dataKey="balance" fill="url(#colorSaldo)" stroke="none" />
+          <Line type="monotone" dataKey="balance" stroke="#3b82f6" name={t('charts.legend.balance')} strokeWidth={2} dot={false} activeDot={{ r: 6 }} />
         </ComposedChart>
       </ResponsiveContainer>
     </div>

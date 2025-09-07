@@ -4,9 +4,10 @@ import React, { useState, useEffect } from 'react';
 interface CurrencyInputProps {
   value: number;
   onChange: (value: number) => void;
+  placeholder?: string;
 }
 
-const CurrencyInput: React.FC<CurrencyInputProps> = ({ value, onChange }) => {
+const CurrencyInput: React.FC<CurrencyInputProps> = ({ value, onChange, placeholder = "0.00" }) => {
   const [raw, setRaw] = useState(value?.toString() || "");
 
   useEffect(() => {
@@ -24,7 +25,7 @@ const CurrencyInput: React.FC<CurrencyInputProps> = ({ value, onChange }) => {
     <input
       className="w-full bg-transparent text-3xl font-semibold outline-none"
       inputMode="decimal"
-      placeholder="R$ 0,00"
+      placeholder={placeholder}
       value={raw}
       onChange={handleChange}
     />

@@ -1,8 +1,8 @@
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Tab } from '../../types';
-// FIX: Import IconProps to strongly type the icon elements.
 import { IconChart, IconList, IconPie, IconSettings, IconWallet, IconTrophy, IconPlus, IconProps } from '../icons/Icon';
+import { useLanguage } from '../LanguageProvider';
 
 interface BottomNavProps {
   activeTab: Tab;
@@ -11,23 +11,12 @@ interface BottomNavProps {
 }
 
 interface TabButtonProps {
-    // FIX: Changed icon type from React.ReactNode to React.ReactElement to allow for prop cloning.
-    // FIX: Specify the props type for the icon element to allow passing the `size` prop.
     icon: React.ReactElement<IconProps>;
     label: string;
     active: boolean;
     onClick: () => void;
     "data-tour-id"?: string;
 }
-
-const navItems = [
-  { tab: 'dashboard' as Tab, label: 'Painel', icon: <IconChart />, tourId: 'dashboard-tab' },
-  { tab: 'transactions' as Tab, label: 'Contas', icon: <IconList />, tourId: 'transactions-tab' },
-  { tab: 'savings' as Tab, label: 'Metas', icon: <IconTrophy />, tourId: 'savings-tab' },
-  { tab: 'budgets' as Tab, label: 'Orçar', icon: <IconWallet />, tourId: 'budgets-tab' },
-  { tab: 'reports' as Tab, label: 'Dados', icon: <IconPie />, tourId: 'reports-tab' },
-  { tab: 'settings' as Tab, label: 'Opções', icon: <IconSettings />, tourId: 'settings-tab' },
-];
 
 const TabButton: React.FC<TabButtonProps> = ({ icon, label, active, onClick, "data-tour-id": dataTourId }) => (
     <button
@@ -45,11 +34,22 @@ const TabButton: React.FC<TabButtonProps> = ({ icon, label, active, onClick, "da
   );
 
 const BottomNav: React.FC<BottomNavProps> = ({ activeTab, onTabChange, onAdd }) => {
+    const { t } = useLanguage();
+
+    const navItems = useMemo(() => [
+      { tab: 'dashboard' as Tab, label: t('nav.dashboard'), icon: <IconChart />, tourId: 'dashboard-tab' },
+      { tab: 'transactions' as Tab, label: t('nav.transactions'), icon: <IconList />, tourId: 'transactions-tab' },
+      { tab: 'savings' as Tab, label: t('nav.savings'), icon: <IconTrophy />, tourId: 'savings-tab' },
+      { tab: 'budgets' as Tab, label: t('nav.budgets'), icon: <IconWallet />, tourId: 'budgets-tab' },
+      { tab: 'reports' as Tab, label: t('nav.reports'), icon: <IconPie />, tourId: 'reports-tab' },
+      { tab: 'settings' as Tab, label: t('nav.settings'), icon: <IconSettings />, tourId: 'settings-tab' },
+    ], [t]);
+
     const leftItems = navItems.slice(0, 3);
     const rightItems = navItems.slice(3);
 
     const activeIndex = navItems.findIndex(item => item.tab === activeTab);
-    const addButtonWidth = 72; // w-14 (56px) + mx-2 (16px) = 72px
+    const addButtonWidth = 72;
     const tabWidth = 72;
 
     const indicatorPosition = activeIndex < 3 
@@ -79,7 +79,7 @@ const BottomNav: React.FC<BottomNavProps> = ({ activeTab, onTabChange, onAdd }) 
               <button 
                 onClick={onAdd} 
                 className="relative z-10 w-14 h-14 rounded-full bg-cyan-600 hover:bg-cyan-500 text-white grid place-items-center shadow-lg transition-colors"
-                aria-label="Adicionar novo lançamento"
+                aria-label={t('nav.add')}
                 data-tour-id="add-button"
               >
                   <IconPlus size={28} />

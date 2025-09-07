@@ -1,0 +1,319 @@
+{
+  "common": {
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "delete": "Excluir",
+    "confirm": "Confirmar",
+    "close": "Fechar",
+    "all": "Todos",
+    "income": "Receita",
+    "expenses": "Despesa",
+    "balance": "Saldo",
+    "other": "Outros",
+    "of": "de",
+    "remaining": "Restante",
+    "overspent": "Estourado"
+  },
+  "nav": {
+    "dashboard": "Painel",
+    "transactions": "Contas",
+    "savings": "Metas",
+    "budgets": "Orçar",
+    "reports": "Dados",
+    "settings": "Opções",
+    "add": "Adicionar novo lançamento"
+  },
+  "header": {
+    "reports": "Relatórios",
+    "settings": "Configurações"
+  },
+  "dashboard": {
+    "monthBalance": "Balanço do mês",
+    "income": "Receitas",
+    "expenses": "Despesas",
+    "accumulatedBalance": "Saldo Acumulado",
+    "incomeVsExpenses": "Receitas x Despesas (mês atual)",
+    "monthlyFlow": "Fluxo Mensal (Receitas x Despesas)",
+    "balanceEvolution": "Evolução e Variação do Saldo",
+    "accumulatedBalanceShort": "Saldo Acumulado",
+    "monthlyVariation": "Variação Mensal (%)",
+    "incomeByCategory": "Receitas por Categoria",
+    "expensesByCategory": "Despesas por Categoria"
+  },
+  "transactions": {
+    "searchPlaceholder": "Buscar lançamentos...",
+    "advancedFilters": "Filtros avançados",
+    "all": "Todos",
+    "income": "Receitas",
+    "expenses": "Despesas",
+    "noResults": "Nenhum resultado para os filtros aplicados.",
+    "noEntries": "Não há {type} neste mês.",
+    "entryTypes": {
+      "todos": "lançamentos",
+      "receitas": "receitas",
+      "despesas": "despesas"
+    },
+    "newEntry": "Novo Lançamento",
+    "paid": "Pago",
+    "received": "Recebido",
+    "overdue": "Vencido",
+    "markUnpaid": "Marcar como não pago",
+    "markPaid": "Marcar como Pago",
+    "markReceived": "Marcar como Recebido"
+  },
+  "savings": {
+    "myGoals": "Minhas Metas",
+    "newGoal": "Nova Meta",
+    "noGoalsMessage": "Você ainda não tem nenhuma meta de poupança.",
+    "createFirstGoal": "Criar minha primeira meta",
+    "targetFor": "Meta para: {date}",
+    "addMoney": "Adicionar Dinheiro",
+    "goalReached": "🎉 Meta Atingida!",
+    "deleteGoalTitle": "Excluir Meta",
+    "deleteGoalMessage": "Tem certeza que deseja excluir a meta \"{name}\"?"
+  },
+  "budgets": {
+    "monthBudget": "Orçamento do Mês",
+    "budgeted": "Orçado",
+    "spent": "Gasto",
+    "remaining": "Restante",
+    "usedPercentage": "Você utilizou <strong>{percentage}%</strong> do seu orçamento total.",
+    "noBudgets": "Nenhum orçamento definido para este mês.",
+    "setBudget": "Definir Orçamento"
+  },
+  "reports": {
+    "periodFilter": "Filtro de Período",
+    "monthly": "Mensal",
+    "quarterly": "Trimestral",
+    "yearly": "Anual",
+    "all": "Todo o Período",
+    "month": "Mês",
+    "year": "Ano",
+    "financialOverview": "Visão Geral Financeira",
+    "exportCSV": "Exportar CSV",
+    "finalAccumulatedBalance": "Saldo Acumulado Final",
+    "accumulatedToDate": "Saldo Acumulado até {date}",
+    "accumulatedToQuarter": "Saldo Acumulado até Q{quarter} {year}",
+    "projectedBalance": "Saldo Projetado ({years} ano(s))",
+    "summaryFor": "Resumo - {period}",
+    "totalIncome": "Total Receitas",
+    "totalExpenses": "Total Despesas",
+    "periodBalance": "Saldo do Período",
+    "categoryBreakdown": "Detalhamento por Categoria",
+    "noEntriesForPeriod": "Nenhum lançamento encontrado para este período.",
+    "paymentStatus": "Status de Pagamentos",
+    "paid": "Pagos",
+    "pending": "Pendentes",
+    "overdueEntries": "⚠️ Lançamentos Vencidos",
+    "overdueByDays": "Vencido há {days} dia(s)",
+    "allTime": "Todo o Período",
+    "yearOf": "Ano de {year}",
+    "quarterOfYear": "{quarter}º Trimestre de {year}"
+  },
+  "settings": {
+    "title": "Configurações",
+    "darkMode": "Modo escuro",
+    "darkModeDescription": "Ativar tema escuro",
+    "currency": "Moeda",
+    "language": "Idioma",
+    "data": "Dados",
+    "resetData": "Resetar todos os dados",
+    "manageCategories": "Gerenciar Categorias",
+    "incomeCategories": "Categorias de Receita",
+    "expenseCategories": "Categorias de Despesa",
+    "add": "Adicionar",
+    "deleteCategoryDefaultWarning": "Não é possível excluir a categoria padrão \"Outros\".",
+    "about": "Sobre",
+    "version": "Wallet SATTI v1.1"
+  },
+  "modals": {
+    "newEntry": "Novo lançamento",
+    "editEntry": "Editar lançamento",
+    "entryDetailsTitle": "Detalhes da {type}",
+    "income": "Receita",
+    "expense": "Despesa",
+    "confirmAction": "Confirmar Ação",
+    "editBudgets": "Editar Orçamento - {month}",
+    "newGoal": "Nova Meta de Poupança",
+    "editGoal": "Editar Meta",
+    "addToGoal": "Adicionar à Meta: {name}",
+    "newCategory": "Nova Categoria",
+    "editCategory": "Editar Categoria",
+    "advancedFilters": "Filtros Avançados",
+    "fillRequiredFields": "Preencha todos os campos obrigatórios: Descrição, Valor e Categoria.",
+    "valueGreaterThanZero": "Por favor, insira um valor maior que zero.",
+    "fillNameAndIcon": "Por favor, preencha o nome e o ícone (emoji)."
+  },
+  "entryForm": {
+    "incomeValue": "Valor da Receita",
+    "expenseValue": "Valor da Despesa",
+    "description": "Descrição",
+    "incomePlaceholder": "Salário",
+    "expensePlaceholder": "Compras do mês",
+    "category": "Categoria",
+    "dueDate": "Data de Vencimento",
+    "recurrence": "Recorrência",
+    "recurrenceTypes": {
+      "none": "Não repetir",
+      "always": "Sempre",
+      "parcelado": "Parcelado"
+    },
+    "frequency": "Frequência",
+    "frequencyTypes": {
+      "monthly": "Mensalmente",
+      "6m": "A cada 6 meses",
+      "yearly": "Anualmente"
+    },
+    "parcels": "Número de parcelas",
+    "saveEntry": "Salvar Lançamento",
+    "saveChanges": "Salvar Alterações"
+  },
+  "entryDetail": {
+    "value": "Valor",
+    "dueDate": "Vencimento",
+    "status": {
+      "paid": "✓ Pago",
+      "overdue": "⚠️ Vencido",
+      "pending": "Pendente"
+    },
+    "recurrence": {
+      "parcelado": "Parcelado {index}/{total}",
+      "always": "Recorrente",
+      "none": "Único"
+    },
+    "deleteOccurrence": "Excluir esta ocorrência",
+    "endRecurrence": "Finalizar recorrência",
+    "deleteSeries": "Excluir toda a série",
+    "deleteOccurrenceTitle": "Excluir Ocorrência",
+    "deleteOccurrenceMessage": "Tem certeza que deseja excluir apenas esta ocorrência? A série continuará existindo.",
+    "endRecurrenceTitle": "Finalizar Recorrência",
+    "endRecurrenceMessage": "Isso impedirá que novas ocorrências sejam geradas a partir desta data. As ocorrências passadas não serão afetadas. Deseja continuar?",
+    "deleteSeriesTitle": "Excluir Série Completa",
+    "deleteSeriesMessage": "Atenção: Isso excluirá permanentemente TODAS as ocorrências (passadas e futuras) deste lançamento. Esta ação não pode ser desfeita."
+  },
+  "editBudgets": {
+    "description": "Defina o valor máximo de gastos para cada categoria neste mês. Deixe em branco ou com R$ 0,00 para não definir um orçamento.",
+    "saveBudget": "Salvar Orçamento"
+  },
+  "goalForm": {
+    "name": "Nome da Meta",
+    "namePlaceholder": "Viagem para o Japão",
+    "targetAmount": "Valor Alvo",
+    "targetAmountPlaceholder": "20000",
+    "targetDate": "Data Alvo (Opcional)",
+    "saveGoal": "Salvar Meta"
+  },
+  "addToSavings": {
+    "amountToAdd": "Valor a Adicionar",
+    "description": "Esta ação criará uma nova despesa na categoria \"Poupança\" para manter seu balanço correto.",
+    "addToSavings": "Adicionar à Poupança"
+  },
+  "categoryForm": {
+    "name": "Nome da Categoria",
+    "namePlaceholder": "Ex: Supermercado",
+    "icon": "Ícone (Emoji)",
+    "color": "Cor",
+    "saveCategory": "Salvar Categoria"
+  },
+  "deleteCategory": {
+    "title": "Excluir Categoria",
+    "message": "Tem certeza que deseja excluir a categoria \"{name}\"? Lançamentos existentes nesta categoria serão movidos para \"Outros\"."
+  },
+  "resetData": {
+    "title": "Resetar Dados do Aplicativo",
+    "message": "Tem certeza que deseja resetar todos os dados? Isso apagará TODOS os lançamentos, orçamentos e metas. Esta ação não pode ser desfeita."
+  },
+  "filterForm": {
+    "incomeCategories": "Categorias de Receita",
+    "expenseCategories": "Categorias de Despesa",
+    "filterByValue": "Filtrar por Valor",
+    "anyValue": "Qualquer Valor",
+    "greaterThan": "Maior que",
+    "lessThan": "Menor que",
+    "equalTo": "Igual a",
+    "filterByDate": "Filtrar por Data",
+    "startDate": "Data de início",
+    "endDate": "Data de fim",
+    "clearFilters": "Limpar Filtros",
+    "applyFilters": "Aplicar Filtros"
+  },
+  "onboarding": {
+    "step1": {
+      "title": "Bem-vindo ao Wallet SATTI!",
+      "content": "Este é um tour rápido para te apresentar as principais funcionalidades do aplicativo. Vamos começar?"
+    },
+    "step2": {
+      "title": "Painel Principal",
+      "content": "Aqui você tem uma visão geral da sua saúde financeira, com balanços mensais, gráficos de fluxo e saldo acumulado."
+    },
+    "step3": {
+      "title": "Balanço do Mês",
+      "content": "Acompanhe rapidamente o total de receitas, despesas e o saldo do mês selecionado."
+    },
+    "step4": {
+      "title": "Lançamentos",
+      "content": "Nesta aba, você pode visualizar, filtrar e gerenciar todas as suas transações, passadas e futuras."
+    },
+    "step5": {
+      "title": "Adicionar Lançamento",
+      "content": "Use este botão central para adicionar novas receitas ou despesas de forma rápida e fácil."
+    },
+    "step6": {
+      "title": "Metas de Poupança",
+      "content": "Crie e acompanhe suas metas financeiras, seja para uma viagem, um bem ou uma reserva de emergência."
+    },
+    "step7": {
+      "title": "Orçamentos",
+      "content": "Defina orçamentos mensais por categoria para manter seus gastos sob controle e evitar surpresas."
+    },
+    "step8": {
+      "title": "Relatórios Detalhados",
+      "content": "Para uma análise mais profunda, explore relatórios, projeções e exporte seus dados."
+    },
+    "step9": {
+      "title": "Configurações",
+      "content": "Personalize o aplicativo, gerencie suas categorias, altere a moeda e muito mais."
+    },
+    "step10": {
+      "title": "Tudo Pronto!",
+      "content": "Você completou o tour. Agora é sua vez! Comece adicionando seu primeiro lançamento e tome o controle de suas finanças."
+    },
+    "previous": "Anterior",
+    "next": "Próximo",
+    "finish": "Finalizar",
+    "start": "Começar"
+  },
+  "categories": {
+    "receita": {
+      "salary": "Salário",
+      "freelance": "Freelance",
+      "business": "Negócios",
+      "investment": "Investimentos",
+      "other_income": "Outros"
+    },
+    "despesa": {
+      "food": "Alimentação",
+      "transport": "Transporte",
+      "housing": "Moradia",
+      "health": "Saúde",
+      "education": "Educação",
+      "entertainment": "Lazer",
+      "savings": "Poupança",
+      "business_exp": "Despesas Empresariais",
+      "tax": "Impostos",
+      "other_expense": "Outros"
+    }
+  },
+  "charts": {
+    "legend": {
+        "income": "Receitas",
+        "expenses": "Despesas",
+        "balance": "Saldo"
+    }
+  },
+  "months": {
+      "jan": "Jan", "feb": "Fev", "mar": "Mar", "apr": "Abr", "may": "Mai", "jun": "Jun", 
+      "jul": "Jul", "aug": "Ago", "sep": "Set", "oct": "Out", "nov": "Nov", "dec": "Dez"
+  }
+}

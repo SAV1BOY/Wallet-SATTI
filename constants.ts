@@ -1,10 +1,21 @@
 
-import { Category, Currency } from './types';
+import { Category, Currency, Language } from './types';
 
 export const CURRENCY_OPTIONS: { id: Currency, label: string }[] = [
   { id: 'BRL', label: 'Real Brasileiro (BRL)' },
   { id: 'USD', label: 'Dólar Americano (USD)' },
   { id: 'EUR', label: 'Euro (EUR)' },
+  { id: 'GBP', label: 'Libra Esterlina (GBP)' },
+  { id: 'RUB', label: 'Rublo Russo (RUB)' },
+  { id: 'ARS', label: 'Peso Argentino (ARS)' },
+  { id: 'JPY', label: 'Iene Japonês (JPY)' },
+  { id: 'CAD', label: 'Dólar Canadense (CAD)' },
+];
+
+export const LANGUAGE_OPTIONS: { id: Language, label: string }[] = [
+    { id: 'pt', label: 'Português (Brasil)' },
+    { id: 'en', label: 'English (US)' },
+    { id: 'es', label: 'Español (España)' },
 ];
 
 export const DEFAULT_CATEGORIES: { receita: Category[], despesa: Category[] } = {

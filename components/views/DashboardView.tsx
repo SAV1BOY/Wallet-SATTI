@@ -7,6 +7,7 @@ import MonthlyTrendChart from '../charts/MonthlyTrendChart';
 import CategoryPieChart from '../charts/CategoryPieChart';
 import AccumulatedBalanceChart from '../charts/AccumulatedBalanceChart';
 import LazyLoad from '../ui/LazyLoad';
+import { useLanguage } from '../LanguageProvider';
 
 interface DashboardViewProps {
   allOccurrences: Occurrence[];
@@ -17,6 +18,8 @@ interface DashboardViewProps {
 }
 
 const DashboardView: React.FC<DashboardViewProps> = ({ allOccurrences, cursor, skips, settings, categories }) => {
+  const { t, locale } = useLanguage();
+  
   const occurrences = useMemo(() => {
     return allOccurrences
       .filter(o => isSameYM(parseDate(o.dueDate), cursor))
@@ -52,22 +55,22 @@ const DashboardView: React.FC<DashboardViewProps> = ({ allOccurrences, cursor, s
   return (
     <div className="space-y-6">
       <div className="bg-white dark:bg-zinc-900 rounded-2xl p-4 border border-zinc-200 dark:border-zinc-800" data-tour-id="dashboard-balance-card">
-        <div className="text-sm text-zinc-500 dark:text-zinc-400 mb-1">Balanço do mês</div>
-        <div className="text-3xl font-bold my-1 text-zinc-900 dark:text-zinc-100">{fmtMoney(totals.bal, settings.currency)}</div>
+        <div className="text-sm text-zinc-500 dark:text-zinc-400 mb-1">{t('dashboard.monthBalance')}</div>
+        <div className="text-3xl font-bold my-1 text-zinc-900 dark:text-zinc-100">{fmtMoney(totals.bal, settings.currency, locale)}</div>
         <div className="grid grid-cols-2 gap-4 mt-2">
           <div>
-            <div className="text-sm text-emerald-500 dark:text-emerald-400">Receitas</div>
-            <div className="font-semibold text-zinc-800 dark:text-zinc-200">{fmtMoney(totals.inc, settings.currency)}</div>
+            <div className="text-sm text-emerald-500 dark:text-emerald-400">{t('dashboard.income')}</div>
+            <div className="font-semibold text-zinc-800 dark:text-zinc-200">{fmtMoney(totals.inc, settings.currency, locale)}</div>
           </div>
           <div className="text-right">
-            <div className="text-sm text-rose-500 dark:text-rose-400">Despesas</div>
-            <div className="font-semibold text-zinc-800 dark:text-zinc-200">{fmtMoney(totals.exp, settings.currency)}</div>
+            <div className="text-sm text-rose-500 dark:text-rose-400">{t('dashboard.expenses')}</div>
+            <div className="font-semibold text-zinc-800 dark:text-zinc-200">{fmtMoney(totals.exp, settings.currency, locale)}</div>
           </div>
         </div>
         <div className="border-t border-zinc-200 dark:border-zinc-800 my-4" />
         <div className="text-center">
-          <div className="text-xs text-zinc-500 dark:text-zinc-400">Saldo Acumulado</div>
-          <div className={`text-xl font-semibold ${balanceColorClass}`}>{fmtMoney(accumulatedBalance, settings.currency)}</div>
+          <div className="text-xs text-zinc-500 dark:text-zinc-400">{t('dashboard.accumulatedBalance')}</div>
+          <div className={`text-xl font-semibold ${balanceColorClass}`}>{fmtMoney(accumulatedBalance, settings.currency, locale)}</div>
         </div>
       </div>
 

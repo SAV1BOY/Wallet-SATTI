@@ -3,6 +3,7 @@ import React, { useMemo } from 'react';
 import { ComposedChart, Line, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, Legend, Cell, Area } from 'recharts';
 import { Occurrence, Settings, SkipData } from '../../types';
 import { addMonthsSafe, parseDate, isSameYM, shortMonthLabel, fmtMoney } from '../../utils/helpers';
+import { useLanguage } from '../LanguageProvider';
 
 interface AccumulatedBalanceChartProps {
   allOccurrences: Occurrence[];
@@ -13,6 +14,8 @@ interface AccumulatedBalanceChartProps {
 }
 
 const AccumulatedBalanceChart: React.FC<AccumulatedBalanceChartProps> = ({ allOccurrences, skips, settings, cursor, months = 6 }) => {
+  const { t, locale } = useLanguage();
+  
   const data = useMemo(() => {
     const chartData = [];
     const occurrencesToConsider = allOccurrences.filter(occ => !skips[occ.id]);
@@ -43,15 +46,15 @@ const AccumulatedBalanceChart: React.FC<AccumulatedBalanceChartProps> = ({ allOc
       }
 
       chartData.push({ 
-        month: shortMonthLabel(monthDate), 
-        'Saldo Acumulado': accumulatedBalance,
-        'Variação Mensal (%)': variation,
+        month: shortMonthLabel(monthDate, locale), 
+        accumulatedBalance,
+        monthlyVariation: variation,
       });
       
       lastMonthAccumulated = accumulatedBalance;
     }
     return chartData;
-  }, [allOccurrences, months, skips, cursor]);
+  }, [allOccurrences, months, skips, cursor, locale]);
 
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
@@ -61,8 +64,8 @@ const AccumulatedBalanceChart: React.FC<AccumulatedBalanceChartProps> = ({ allOc
           {payload.map((pld: any) => (
             <p key={pld.dataKey} style={{ color: pld.stroke || pld.fill }}>
               {`${pld.name}: `}
-              {pld.dataKey === 'Saldo Acumulado' 
-                ? fmtMoney(pld.value, settings.currency) 
+              {pld.dataKey === 'accumulatedBalance' 
+                ? fmtMoney(pld.value, settings.currency, locale) 
                 : `${pld.value.toFixed(2)}%`}
             </p>
           ))}
@@ -76,7 +79,7 @@ const AccumulatedBalanceChart: React.FC<AccumulatedBalanceChartProps> = ({ allOc
 
   return (
     <div className="bg-white dark:bg-zinc-900 rounded-2xl p-4 border border-zinc-200 dark:border-zinc-800">
-      <h3 className="text-lg font-semibold mb-4 text-zinc-900 dark:text-zinc-100">Evolução e Variação do Saldo</h3>
+      <h3 className="text-lg font-semibold mb-4 text-zinc-900 dark:text-zinc-100">{t('dashboard.balanceEvolution')}</h3>
       <ResponsiveContainer width="100%" height={300}>
         <ComposedChart data={data}>
           <defs>
@@ -98,7 +101,7 @@ const AccumulatedBalanceChart: React.FC<AccumulatedBalanceChartProps> = ({ allOc
             yAxisId="left"
             stroke="#a855f7" 
             fontSize={12} 
-            tickFormatter={(v: number) => fmtMoney(v, settings.currency)} 
+            tickFormatter={(v: number) => fmtMoney(v, settings.currency, locale)} 
           />
           <YAxis 
             yAxisId="right"
@@ -109,13 +112,13 @@ const AccumulatedBalanceChart: React.FC<AccumulatedBalanceChartProps> = ({ allOc
           />
           <Tooltip content={<CustomTooltip />} />
           <Legend />
-          <Bar yAxisId="right" dataKey="Variação Mensal (%)" name="Variação Mensal (%)">
+          <Bar yAxisId="right" dataKey="monthlyVariation" name={t('dashboard.monthlyVariation')}>
             {data.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry['Variação Mensal (%)'] >= 0 ? 'url(#gradientVariationPositive)' : 'url(#gradientVariationNegative)'} />
+                <Cell key={`cell-${index}`} fill={entry.monthlyVariation >= 0 ? 'url(#gradientVariationPositive)' : 'url(#gradientVariationNegative)'} />
             ))}
           </Bar>
-          <Area yAxisId="left" type="monotone" dataKey="Saldo Acumulado" fill="url(#gradientSaldo)" stroke="none" />
-          <Line yAxisId="left" type="monotone" dataKey="Saldo Acumulado" name="Saldo Acumulado" stroke="#a855f7" strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 6 }}/>
+          <Area yAxisId="left" type="monotone" dataKey="accumulatedBalance" fill="url(#gradientSaldo)" stroke="none" />
+          <Line yAxisId="left" type="monotone" dataKey="accumulatedBalance" name={t('dashboard.accumulatedBalanceShort')} stroke="#a855f7" strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 6 }}/>
         </ComposedChart>
       </ResponsiveContainer>
     </div>

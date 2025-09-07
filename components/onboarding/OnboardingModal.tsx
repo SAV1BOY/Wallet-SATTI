@@ -1,69 +1,31 @@
 
-import React, { useState, useLayoutEffect, useRef } from 'react';
+import React, { useState, useLayoutEffect, useRef, useMemo } from 'react';
+import { useLanguage } from '../LanguageProvider';
 
 interface OnboardingModalProps {
   open: boolean;
   onComplete: () => void;
 }
 
-const tourSteps = [
-  {
-    targetId: null,
-    title: 'Bem-vindo ao Wallet SATTI!',
-    content: 'Este é um tour rápido para te apresentar as principais funcionalidades do aplicativo. Vamos começar?',
-  },
-  {
-    targetId: 'dashboard-tab',
-    title: 'Painel Principal',
-    content: 'Aqui você tem uma visão geral da sua saúde financeira, com balanços mensais, gráficos de fluxo e saldo acumulado.',
-  },
-  {
-    targetId: 'dashboard-balance-card',
-    title: 'Balanço do Mês',
-    content: 'Acompanhe rapidamente o total de receitas, despesas e o saldo do mês selecionado.',
-  },
-  {
-    targetId: 'transactions-tab',
-    title: 'Lançamentos',
-    content: 'Nesta aba, você pode visualizar, filtrar e gerenciar todas as suas transações, passadas e futuras.',
-  },
-  {
-    targetId: 'add-button',
-    title: 'Adicionar Lançamento',
-    content: 'Use este botão central para adicionar novas receitas ou despesas de forma rápida e fácil.',
-  },
-  {
-    targetId: 'savings-tab',
-    title: 'Metas de Poupança',
-    content: 'Crie e acompanhe suas metas financeiras, seja para uma viagem, um bem ou uma reserva de emergência.',
-  },
-  {
-    targetId: 'budgets-tab',
-    title: 'Orçamentos',
-    content: 'Defina orçamentos mensais por categoria para manter seus gastos sob controle e evitar surpresas.',
-  },
-  {
-    targetId: 'reports-tab',
-    title: 'Relatórios Detalhados',
-    content: 'Para uma análise mais profunda, explore relatórios, projeções e exporte seus dados.',
-  },
-  {
-    targetId: 'settings-tab',
-    title: 'Configurações',
-    content: 'Personalize o aplicativo, gerencie suas categorias, altere a moeda e muito mais.',
-  },
-  {
-    targetId: null,
-    title: 'Tudo Pronto!',
-    content: 'Você completou o tour. Agora é sua vez! Comece adicionando seu primeiro lançamento e tome o controle de suas finanças.',
-  },
-];
-
 const OnboardingModal: React.FC<OnboardingModalProps> = ({ open, onComplete }) => {
+  const { t } = useLanguage();
   const [stepIndex, setStepIndex] = useState(0);
   const [spotlightStyle, setSpotlightStyle] = useState<React.CSSProperties>({});
   const [tooltipStyle, setTooltipStyle] = useState<React.CSSProperties>({ opacity: 0 });
   const tooltipRef = useRef<HTMLDivElement>(null);
+
+  const tourSteps = useMemo(() => [
+    { targetId: null, title: t('onboarding.step1.title'), content: t('onboarding.step1.content') },
+    { targetId: 'dashboard-tab', title: t('onboarding.step2.title'), content: t('onboarding.step2.content') },
+    { targetId: 'dashboard-balance-card', title: t('onboarding.step3.title'), content: t('onboarding.step3.content') },
+    { targetId: 'transactions-tab', title: t('onboarding.step4.title'), content: t('onboarding.step4.content') },
+    { targetId: 'add-button', title: t('onboarding.step5.title'), content: t('onboarding.step5.content') },
+    { targetId: 'savings-tab', title: t('onboarding.step6.title'), content: t('onboarding.step6.content') },
+    { targetId: 'budgets-tab', title: t('onboarding.step7.title'), content: t('onboarding.step7.content') },
+    { targetId: 'reports-tab', title: t('onboarding.step8.title'), content: t('onboarding.step8.content') },
+    { targetId: 'settings-tab', title: t('onboarding.step9.title'), content: t('onboarding.step9.content') },
+    { targetId: null, title: t('onboarding.step10.title'), content: t('onboarding.step10.content') }
+  ], [t]);
 
   const currentStep = tourSteps[stepIndex];
   const isFirstStep = stepIndex === 0;
@@ -186,10 +148,10 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({ open, onComplete }) =
 
             <div className="flex justify-between items-center">
                 {isFirstStep ? <div /> : (
-                    <button onClick={goPrev} className="px-4 py-2 text-sm rounded-lg hover:bg-zinc-700">Anterior</button>
+                    <button onClick={goPrev} className="px-4 py-2 text-sm rounded-lg hover:bg-zinc-700">{t('onboarding.previous')}</button>
                 )}
                 <button onClick={goNext} className="px-4 py-2 text-sm rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-semibold">
-                    {isLastStep ? 'Finalizar' : isFirstStep ? 'Começar' : 'Próximo'}
+                    {isLastStep ? t('onboarding.finish') : isFirstStep ? t('onboarding.start') : t('onboarding.next')}
                 </button>
             </div>
 

@@ -1,5 +1,4 @@
 
-
 export type Kind = 'receita' | 'despesa';
 
 export type Recurrence = 'none' | 'always' | 'parcelado';
@@ -15,8 +14,12 @@ export interface Category {
   color: string;
 }
 
-export const CURRENCIES = ['BRL', 'USD', 'EUR'] as const;
+export const CURRENCIES = ['BRL', 'USD', 'EUR', 'GBP', 'RUB', 'ARS', 'JPY', 'CAD'] as const;
 export type Currency = typeof CURRENCIES[number];
+
+export const LANGUAGES = ['pt', 'en', 'es'] as const;
+export type Language = typeof LANGUAGES[number];
+
 
 export interface Entry {
   id: string;
@@ -57,6 +60,7 @@ export interface Settings {
   dark: boolean;
   email: string;
   currency: Currency;
+  language: Language;
 }
 
 export interface Budget {

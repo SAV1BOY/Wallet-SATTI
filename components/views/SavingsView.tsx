@@ -1,7 +1,9 @@
+
 import React from 'react';
 import { SavingsGoal, Settings } from '../../types';
-import { fmtMoney } from '../../utils/helpers';
+import { fmtMoney, LOCALE_MAP } from '../../utils/helpers';
 import { IconEdit, IconPlus } from '../icons/Icon';
+import { useLanguage } from '../LanguageProvider';
 
 interface SavingsViewProps {
   savingsGoals: SavingsGoal[];
@@ -13,15 +15,17 @@ interface SavingsViewProps {
 }
 
 const GoalCard: React.FC<{ goal: SavingsGoal; settings: Settings; onEdit: () => void; onDelete: () => void; onAdd: () => void; }> = ({ goal, settings, onEdit, onDelete, onAdd }) => {
+  const { t, locale } = useLanguage();
   const progress = goal.targetAmount > 0 ? (goal.savedAmount / goal.targetAmount) * 100 : 0;
   const isComplete = goal.savedAmount >= goal.targetAmount;
+  const targetDate = goal.targetDate ? new Date(goal.targetDate).toLocaleDateString(LOCALE_MAP[locale], { timeZone: 'UTC' }) : null;
 
   return (
     <div className="bg-white dark:bg-zinc-900 rounded-2xl p-4 border border-zinc-200 dark:border-zinc-800 space-y-3">
       <div className="flex justify-between items-start">
         <div>
           <h4 className="font-semibold text-lg">{goal.name}</h4>
-          {goal.targetDate && <p className="text-xs text-zinc-500 dark:text-zinc-400">Meta para: {new Date(goal.targetDate).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}</p>}
+          {targetDate && <p className="text-xs text-zinc-500 dark:text-zinc-400">{t('savings.targetFor', { date: targetDate })}</p>}
         </div>
         <div className="flex items-center gap-1">
           <button onClick={onEdit} className="p-2 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-100"><IconEdit size={18} /></button>
@@ -33,8 +37,8 @@ const GoalCard: React.FC<{ goal: SavingsGoal; settings: Settings; onEdit: () => 
       
       <div>
         <div className="flex justify-between items-baseline text-sm mb-1">
-          <span className={`${isComplete ? 'text-emerald-500 dark:text-emerald-400' : 'text-zinc-800 dark:text-zinc-200'}`}>{fmtMoney(goal.savedAmount, settings.currency)}</span>
-          <span className="text-zinc-500 dark:text-zinc-400">de {fmtMoney(goal.targetAmount, settings.currency)}</span>
+          <span className={`${isComplete ? 'text-emerald-500 dark:text-emerald-400' : 'text-zinc-800 dark:text-zinc-200'}`}>{fmtMoney(goal.savedAmount, settings.currency, locale)}</span>
+          <span className="text-zinc-500 dark:text-zinc-400">{t('common.of')} {fmtMoney(goal.targetAmount, settings.currency, locale)}</span>
         </div>
         <div className="w-full bg-zinc-200 dark:bg-zinc-700 rounded-full h-3">
           <div
@@ -47,12 +51,12 @@ const GoalCard: React.FC<{ goal: SavingsGoal; settings: Settings; onEdit: () => 
 
       {!isComplete && (
         <button onClick={onAdd} className="w-full py-2 rounded-lg bg-cyan-600/20 text-cyan-600 dark:text-cyan-300 hover:bg-cyan-600/40 border border-cyan-500/50 transition-colors">
-          Adicionar Dinheiro
+          {t('savings.addMoney')}
         </button>
       )}
       {isComplete && (
         <div className="text-center py-2 rounded-lg bg-emerald-600/20 text-emerald-300 border border-emerald-500/50">
-          🎉 Meta Atingida!
+          {t('savings.goalReached')}
         </div>
       )}
     </div>
@@ -61,22 +65,23 @@ const GoalCard: React.FC<{ goal: SavingsGoal; settings: Settings; onEdit: () => 
 
 
 const SavingsView: React.FC<SavingsViewProps> = ({ savingsGoals, settings, onNewGoal, onEditGoal, onAddToGoal, onDeleteGoal }) => {
+  const { t } = useLanguage();
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-          <h3 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">Minhas Metas</h3>
+          <h3 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">{t('savings.myGoals')}</h3>
           <button onClick={onNewGoal} className="flex items-center gap-2 text-sm bg-cyan-600 hover:bg-cyan-500 text-white px-3 py-2 rounded-lg transition-colors">
               <IconPlus size={16} />
-              Nova Meta
+              {t('savings.newGoal')}
           </button>
       </div>
 
       {savingsGoals.length === 0 ? (
         <div className="text-center py-20 text-zinc-500 dark:text-zinc-400 border-2 border-dashed border-zinc-300 dark:border-zinc-800 rounded-2xl">
           <p className="text-5xl mb-4">🐷</p>
-          <p className="mb-6">Você ainda não tem nenhuma meta de poupança.</p>
+          <p className="mb-6">{t('savings.noGoalsMessage')}</p>
           <button onClick={onNewGoal} className="mx-auto px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white transition-colors">
-            Criar minha primeira meta
+            {t('savings.createFirstGoal')}
           </button>
         </div>
       ) : (

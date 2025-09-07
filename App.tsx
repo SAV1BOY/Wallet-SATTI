@@ -1,8 +1,9 @@
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { AppData, Occurrence, Entry, Tab, Action, Budget, SavingsGoal, Category, Kind } from './types';
+import { AppData, Occurrence, Entry, Tab, Action, Budget, SavingsGoal, Category, Kind, Settings } from './types';
 import { getInitialData, getAllOccurrences, getEmptyData } from './services/financeService';
 import { addMonthsSafe, monthLabel, uid, pad, dateISO, storage } from './utils/helpers';
+import { useLanguage } from './components/LanguageProvider';
 
 import Header from './components/layout/Header';
 import BottomNav from './components/layout/BottomNav';
@@ -24,12 +25,13 @@ import OnboardingModal from './components/onboarding/OnboardingModal';
 
 
 export default function App() {
+  const { locale, setLocale, t } = useLanguage();
+  
   const [data, setData] = useState<AppData>(() => {
     try {
       const raw = storage.getItem('finapp-data');
       if (raw) {
         const parsed = JSON.parse(raw);
-        // Migration for users without categories data
         if (!parsed.categories || parsed.categories.receita.length === 0) {
           return { ...parsed, categories: getInitialData().categories };
         }
@@ -69,6 +71,12 @@ export default function App() {
       setShowOnboarding(true);
     }
   }, []);
+  
+  useEffect(() => {
+    if (data.settings.language !== locale) {
+        setLocale(data.settings.language);
+    }
+  }, [data.settings.language, locale, setLocale]);
 
   useEffect(() => {
     try {
@@ -83,6 +91,10 @@ export default function App() {
   }, [data.settings?.dark]);
 
   const allOccurrences = useMemo(() => getAllOccurrences(data.entries, 120), [data.entries]);
+  
+  const handleSettingsChange = (newSettings: Settings) => {
+    setData(d => ({...d, settings: newSettings}));
+  };
 
   const handleSaveEntry = (entry: Omit<Entry, 'id' | 'createdAt'>) => {
     setData((d) => ({ ...d, entries: [...d.entries, { ...entry, id: uid(), createdAt: new Date().toISOString() }] }));
@@ -140,7 +152,7 @@ export default function App() {
       const newEntry: Entry = {
         id: uid(),
         kind: 'despesa',
-        description: `Aporte para meta: ${goal.name}`,
+        description: t('savings.addMoney') + `: ${goal.name}`,
         value: amount,
         dueDate: dateISO(new Date()),
         recurrence: 'none',
@@ -215,7 +227,7 @@ export default function App() {
     if (!kind) return;
 
     if (!categoryData.label.trim() || !categoryData.icon.trim()) {
-      alert("Nome da Categoria e Ícone são obrigatórios.");
+      alert(t('modals.fillNameAndIcon'));
       return;
     }
 
@@ -240,7 +252,7 @@ export default function App() {
 
   const handleDeleteCategory = ({ categoryId, kind }: { categoryId: string, kind: Kind }) => {
     setData(d => {
-      if (['other_income', 'other_expense'].includes(categoryId)) return d; // Cannot delete default
+      if (['other_income', 'other_expense'].includes(categoryId)) return d;
       
       const defaultCategoryId = kind === 'receita' ? 'other_income' : 'other_expense';
       const updatedEntries = d.entries.map(entry => 
@@ -288,12 +300,12 @@ export default function App() {
       {activeTab === 'settings' || activeTab === 'reports' ? (
         <header className="sticky top-0 z-40 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-lg border-b border-zinc-200 dark:border-zinc-800">
           <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-center">
-              <div className="text-lg text-zinc-800 dark:text-zinc-200 font-medium select-none">{activeTab === 'settings' ? 'Configurações' : 'Relatórios'}</div>
+              <div className="text-lg text-zinc-800 dark:text-zinc-200 font-medium select-none">{activeTab === 'settings' ? t('header.settings') : t('header.reports')}</div>
           </div>
         </header>
       ) : (
         <Header
-          title={monthLabel(cursor)}
+          title={monthLabel(cursor, locale)}
           onPrev={() => setCursor(c => addMonthsSafe(c, -1))}
           onNext={() => setCursor(c => addMonthsSafe(c, 1))}
         />
@@ -309,7 +321,7 @@ export default function App() {
                 onNewGoal={() => { setEditingGoal(null); setShowGoalModal(true); }}
                 onEditGoal={(goal) => { setEditingGoal(goal); setShowGoalModal(true); }}
                 onAddToGoal={setAddingToGoal}
-                onDeleteGoal={(goal) => setConfirmAction({ type: 'deleteGoal', title: 'Excluir Meta', payload: goal.id, message: `Tem certeza que deseja excluir a meta "${goal.name}"?` })}
+                onDeleteGoal={(goal) => setConfirmAction({ type: 'deleteGoal', title: t('savings.deleteGoalTitle'), payload: goal.id, message: t('savings.deleteGoalMessage', { name: goal.name }) })}
             />
         }
         {activeTab === 'budgets' && <BudgetsView allOccurrences={allOccurrences} cursor={cursor} data={data} onEdit={() => setShowEditBudgets(true)} settings={data.settings} categories={data.categories} />}
@@ -318,16 +330,16 @@ export default function App() {
             <SettingsView 
                 settings={data.settings}
                 categories={data.categories}
-                onSettingsChange={(newSettings) => setData(d => ({ ...d, settings: newSettings }))}
-                onReset={() => setConfirmAction({ type: 'reset', title: 'Resetar Dados do Aplicativo', message: 'Tem certeza que deseja resetar todos os dados? Isso apagará TODOS os lançamentos, orçamentos e metas. Esta ação não pode ser desfeita.' })}
+                onSettingsChange={handleSettingsChange}
+                onReset={() => setConfirmAction({ type: 'reset', title: t('resetData.title'), message: t('resetData.message') })}
                 onAddCategory={(kind) => { setCategoryKindToAdd(kind); setEditingCategory(null); setShowCategoryModal(true); }}
                 onEditCategory={(category, kind) => { setEditingCategory({ category, kind }); setCategoryKindToAdd(null); setShowCategoryModal(true); }}
                 onDeleteCategory={(category, kind) => {
                   if (['other_income', 'other_expense'].includes(category.id)) {
-                    alert('Não é possível excluir a categoria padrão "Outros".');
+                    alert(t('settings.deleteCategoryDefaultWarning'));
                     return;
                   }
-                  setConfirmAction({ type: 'deleteCategory', payload: { categoryId: category.id, kind }, title: 'Excluir Categoria', message: `Tem certeza que deseja excluir a categoria "${category.label}"? Lançamentos existentes nesta categoria serão movidos para "Outros".`})
+                  setConfirmAction({ type: 'deleteCategory', payload: { categoryId: category.id, kind }, title: t('deleteCategory.title'), message: t('deleteCategory.message', { name: category.label })})
                 }}
             />
         }
@@ -335,9 +347,9 @@ export default function App() {
       
       <BottomNav activeTab={activeTab} onTabChange={setActiveTab} onAdd={() => setShowNew(true)} />
 
-      <NewEntryModal open={showNew} onClose={() => setShowNew(false)} onSave={handleSaveEntry} categories={data.categories} />
+      <NewEntryModal open={showNew} onClose={() => setShowNew(false)} onSave={handleSaveEntry} categories={data.categories} settings={data.settings} />
       
-      {editing && (<EditEntryModal open={!!editing} onClose={() => setEditing(null)} initial={editing} onSave={handleApplyEdit} categories={data.categories} />)}
+      {editing && (<EditEntryModal open={!!editing} onClose={() => setEditing(null)} initial={editing} onSave={handleApplyEdit} categories={data.categories} settings={data.settings} />)}
 
       <EntryDetailSheet 
         detail={detail} 
@@ -371,6 +383,7 @@ export default function App() {
         onClose={() => setAddingToGoal(null)}
         onSave={handleAddToSavings}
         goal={addingToGoal}
+        settings={data.settings}
       />
 
       <CategoryModal 
@@ -383,7 +396,7 @@ export default function App() {
       <ConfirmModal
         open={!!confirmAction}
         onClose={() => setConfirmAction(null)}
-        title={confirmAction?.title || "Confirmar Ação"}
+        title={confirmAction?.title || t('modals.confirmAction')}
         onConfirm={handleConfirm}>
         {confirmAction?.message}
       </ConfirmModal>

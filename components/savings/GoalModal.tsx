@@ -1,6 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
 import { SavingsGoal } from '../../types';
 import Modal from '../ui/Modal';
+import { useLanguage } from '../LanguageProvider';
 
 interface GoalModalProps {
   open: boolean;
@@ -10,6 +12,7 @@ interface GoalModalProps {
 }
 
 const GoalModal: React.FC<GoalModalProps> = ({ open, onClose, onSave, initial }) => {
+  const { t } = useLanguage();
   const [name, setName] = useState('');
   const [targetAmount, setTargetAmount] = useState(0);
   const [targetDate, setTargetDate] = useState('');
@@ -30,7 +33,7 @@ const GoalModal: React.FC<GoalModalProps> = ({ open, onClose, onSave, initial })
 
   const handleSave = () => {
     if (!name.trim() || targetAmount <= 0) {
-      alert('Por favor, preencha o nome e um valor alvo maior que zero.');
+      alert(t('modals.valueGreaterThanZero'));
       return;
     }
     onSave({
@@ -42,31 +45,31 @@ const GoalModal: React.FC<GoalModalProps> = ({ open, onClose, onSave, initial })
   };
 
   return (
-    <Modal open={open} onClose={onClose} title={initial ? 'Editar Meta' : 'Nova Meta de Poupança'}>
+    <Modal open={open} onClose={onClose} title={initial ? t('modals.editGoal') : t('modals.newGoal')}>
       <div className="px-1 space-y-4">
         <div>
-          <label className="text-sm text-zinc-500 dark:text-zinc-400 mb-1 block">Nome da Meta</label>
+          <label className="text-sm text-zinc-500 dark:text-zinc-400 mb-1 block">{t('goalForm.name')}</label>
           <input
             className="w-full px-3 py-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 outline-none focus:border-cyan-500"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Viagem para o Japão"
+            placeholder={t('goalForm.namePlaceholder')}
           />
         </div>
 
         <div>
-          <label className="text-sm text-zinc-500 dark:text-zinc-400 mb-1 block">Valor Alvo (R$)</label>
+          <label className="text-sm text-zinc-500 dark:text-zinc-400 mb-1 block">{t('goalForm.targetAmount')}</label>
           <input
             className="w-full px-3 py-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 outline-none focus:border-cyan-500"
             type="number"
             value={targetAmount || ''}
             onChange={(e) => setTargetAmount(parseFloat(e.target.value) || 0)}
-            placeholder="20000"
+            placeholder={t('goalForm.targetAmountPlaceholder')}
           />
         </div>
         
         <div>
-          <label className="text-sm text-zinc-500 dark:text-zinc-400 mb-1 block">Data Alvo (Opcional)</label>
+          <label className="text-sm text-zinc-500 dark:text-zinc-400 mb-1 block">{t('goalForm.targetDate')}</label>
           <input
             type="date"
             className="w-full px-3 py-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 outline-none focus:border-cyan-500"
@@ -77,7 +80,7 @@ const GoalModal: React.FC<GoalModalProps> = ({ open, onClose, onSave, initial })
 
         <div className="pt-2">
           <button onClick={handleSave} className="w-full py-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-medium transition-colors">
-            Salvar Meta
+            {t('goalForm.saveGoal')}
           </button>
         </div>
       </div>
