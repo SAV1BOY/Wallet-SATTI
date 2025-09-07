@@ -34,6 +34,7 @@
           navigator.serviceWorker.register('/service-worker.js')
             .then(registration => {
               console.log('ServiceWorker registration successful with scope: ', registration.scope);
+              registration.update();
             })
             .catch(error => {
               console.log('ServiceWorker registration failed: ', error);

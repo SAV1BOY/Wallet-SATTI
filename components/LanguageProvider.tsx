@@ -1,9 +1,10 @@
-
 import React, { createContext, useState, useContext, useEffect, useCallback, ReactNode } from 'react';
-import { Language } from '../types';
+import { Language, LANGUAGES } from '../types';
 import { storage } from '../utils/helpers';
 
 type Translations = { [key: string]: string | Translations };
+
+const translationCache: Partial<Record<Language, Translations>> = {};
 
 interface LanguageContextType {
   locale: Language;
@@ -19,42 +20,53 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
         const raw = storage.getItem('finapp-data');
         if (raw) {
             const parsed = JSON.parse(raw);
-            if (parsed.settings?.language && ['pt', 'en', 'es'].includes(parsed.settings.language)) {
+            if (parsed.settings?.language && LANGUAGES.includes(parsed.settings.language)) {
                 return parsed.settings.language;
             }
         }
     } catch {}
     return 'pt';
   });
-  
-  const [translations, setTranslations] = useState<Translations>({});
+
+  const [translations, setTranslations] = useState<Translations | null>(translationCache[locale] || null);
 
   useEffect(() => {
-    const fetchTranslations = async () => {
+    let isMounted = true;
+    const loadTranslations = async () => {
+      if (translationCache[locale]) {
+        if (isMounted) setTranslations(translationCache[locale] as Translations);
+        return;
+      }
       try {
         const response = await fetch(`/locales/${locale}.json`);
-        if (!response.ok) throw new Error(`Failed to load translations for ${locale}`);
+        if (!response.ok) throw new Error(`Failed to fetch translations: ${response.statusText}`);
         const data = await response.json();
-        setTranslations(data);
-      } catch (error) {
-        console.error(error);
-        if (locale !== 'pt') {
-            setLocaleState('pt');
+        translationCache[locale] = data;
+        if (isMounted) {
+          setTranslations(data);
         }
+      } catch (error) {
+        console.error(`Error loading translations for ${locale}:`, error);
       }
     };
-    fetchTranslations();
+    loadTranslations();
+    return () => { isMounted = false; };
   }, [locale]);
-
+  
   useEffect(() => {
     document.documentElement.lang = locale;
   }, [locale]);
   
   const setLocale = (newLocale: Language) => {
-      setLocaleState(newLocale);
+      if (LANGUAGES.includes(newLocale)) {
+        setLocaleState(newLocale);
+      }
   };
 
   const t = useCallback((key: string, options?: { [key: string]: any }): any => {
+    if (!translations) {
+        return key;
+    }
     const keys = key.split('.');
     let result: any = translations;
     for (const k of keys) {
@@ -67,7 +79,8 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
 
     if (typeof result === 'string' && options) {
       return Object.entries(options).reduce((acc, [optKey, optValue]) => {
-        return acc.replace(new RegExp(`\\{\\{${optKey}\\}\\}`, 'g'), String(optValue));
+        const regex = new RegExp(`\\{${optKey}\\}`, 'g');
+        return acc.replace(regex, String(optValue));
       }, result);
     }
     
@@ -75,10 +88,14 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
   }, [translations]);
 
   const value = { locale, setLocale, t };
+  
+  if (!translations) {
+    return null; // Don't render app until translations are loaded
+  }
 
   return (
     <LanguageContext.Provider value={value}>
-      {Object.keys(translations).length > 0 ? children : null}
+      {children}
     </LanguageContext.Provider>
   );
 };
