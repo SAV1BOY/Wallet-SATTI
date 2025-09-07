@@ -68,7 +68,6 @@ const SettingsView: React.FC<SettingsViewProps> = ({ settings, categories, onSet
       <CategoryManagement 
         categories={categories}
         onAdd={onAddCategory}
-        // FIX: The `onEdit` prop was passed with an undefined variable. It should be `onEditCategory`, which is received from the parent component.
         onEdit={onEditCategory}
         onDelete={onDeleteCategory}
       />
