@@ -21,7 +21,7 @@ interface TabButtonProps {
 const TabButton: React.FC<TabButtonProps> = ({ icon, label, active, onClick, "data-tour-id": dataTourId }) => (
     <button
       onClick={onClick}
-      className={`relative z-10 flex flex-col items-center justify-center p-2 w-[72px] h-14 transition-colors duration-300 ${
+      className={`relative z-10 flex flex-col items-center justify-center p-1 w-full h-14 transition-colors duration-300 ${
         active
           ? "text-cyan-600 dark:text-cyan-300"
           : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
@@ -29,7 +29,7 @@ const TabButton: React.FC<TabButtonProps> = ({ icon, label, active, onClick, "da
       data-tour-id={dataTourId}
     >
       {React.cloneElement(icon, { size: 22 })}
-      <span className={`text-xs mt-1 transition-all ${active ? 'font-semibold' : 'font-medium'}`}>{label}</span>
+      <span className={`text-[10px] text-center leading-tight mt-1 transition-all ${active ? 'font-semibold' : 'font-medium'}`}>{label}</span>
     </button>
   );
 
@@ -45,23 +45,24 @@ const BottomNav: React.FC<BottomNavProps> = ({ activeTab, onTabChange, onAdd }) 
       { tab: 'settings' as Tab, label: t('nav.settings'), icon: <IconSettings />, tourId: 'settings-tab' },
     ], [t]);
 
+    const activeIndex = navItems.findIndex(i => i.tab === activeTab);
+    
     const leftItems = navItems.slice(0, 3);
     const rightItems = navItems.slice(3);
 
-    const activeIndex = navItems.findIndex(item => item.tab === activeTab);
-    const addButtonWidth = 72;
-    const tabWidth = 72;
-
-    const indicatorPosition = activeIndex < 3 
-      ? activeIndex * tabWidth
-      : (3 * tabWidth) + addButtonWidth + ((activeIndex - 3) * tabWidth);
+    const getIndicatorPosition = (index: number) => {
+        if (index < 0) return 'translateX(0)';
+        if (index < 3) return `translateX(calc(${index} * 100%))`;
+        if (index >= 3) return `translateX(calc(${index + 1} * 100%))`;
+        return 'translateX(0)';
+    }
 
   return (
-    <nav className="fixed bottom-4 inset-x-0 z-50 flex justify-center">
-        <div className="relative flex items-center p-2 rounded-full bg-white/70 dark:bg-zinc-900/70 backdrop-blur-lg border border-zinc-300/80 dark:border-zinc-700/60 shadow-2xl">
+    <nav className="fixed bottom-0 inset-x-0 z-50 md:bottom-4 flex justify-center">
+        <div className="relative w-full md:w-auto md:min-w-[480px] md:max-w-xl grid grid-cols-7 items-start md:items-center px-1 md:p-2 md:rounded-full bg-white/70 dark:bg-zinc-900/70 backdrop-blur-lg border-t md:border border-zinc-300/80 dark:border-zinc-700/60 md:shadow-2xl">
             <div 
-              className="absolute top-2 left-2 w-[72px] h-14 bg-cyan-100 dark:bg-zinc-800 rounded-full transition-transform duration-300 ease-in-out shadow-inner" 
-              style={{ transform: `translateX(${indicatorPosition}px)` }}
+              className="absolute top-0 md:top-2 md:bottom-2 left-0 w-[calc(100%/7)] h-14 md:h-auto bg-cyan-100 dark:bg-zinc-800 rounded-full transition-transform duration-300 ease-in-out shadow-inner pointer-events-none" 
+              style={{ transform: getIndicatorPosition(activeIndex), opacity: activeIndex > -1 ? 1 : 0 }}
             />
 
             {leftItems.map(item => (
@@ -75,10 +76,10 @@ const BottomNav: React.FC<BottomNavProps> = ({ activeTab, onTabChange, onAdd }) 
                 />
             ))}
             
-            <div style={{ width: `${addButtonWidth}px` }} className="flex justify-center items-center flex-shrink-0">
+            <div className="flex justify-center items-center flex-shrink-0">
               <button 
                 onClick={onAdd} 
-                className="relative z-10 w-14 h-14 rounded-full bg-cyan-600 hover:bg-cyan-500 text-white grid place-items-center shadow-lg transition-colors"
+                className="relative z-10 w-14 h-14 rounded-full bg-cyan-600 hover:bg-cyan-500 text-white grid place-items-center shadow-lg transition-transform hover:scale-105 active:scale-95 -mt-6 md:mt-0"
                 aria-label={t('nav.add')}
                 data-tour-id="add-button"
               >

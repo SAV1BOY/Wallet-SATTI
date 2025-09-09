@@ -1,3 +1,4 @@
+
 {
   "common": {
     "save": "Salvar",
@@ -269,11 +270,11 @@
     },
     "step8": {
       "title": "Relatórios Detalhados",
-      "content": "Para uma análise mais profunda, explore relatórios, projeções e exporte seus dados."
+      "content": "Para uma análise mais profunda, explore relatórios e projeções detalhadas na aba 'Dados'."
     },
     "step9": {
       "title": "Configurações",
-      "content": "Personalize o aplicativo, gerencie suas categorias, altere a moeda e muito mais."
+      "content": "Personalize o aplicativo, gerencie suas categorias e altere a moeda na aba 'Opções'."
     },
     "step10": {
       "title": "Tudo Pronto!",

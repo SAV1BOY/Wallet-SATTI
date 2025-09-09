@@ -1,3 +1,4 @@
+
 {
   "common": {
     "save": "Guardar",
@@ -261,7 +262,7 @@
     },
     "step6": {
       "title": "Metas de Ahorro",
-      "content": "Crea y sigue tus metas financieras, ya sea para un viaje, una compra o un fondo de emergencia."
+      "content": "Crea y sigue tus metas financieras, ya sea para un viaje o un fondo de emergencia."
     },
     "step7": {
       "title": "Presupuestos",
@@ -269,11 +270,11 @@
     },
     "step8": {
       "title": "Informes Detallados",
-      "content": "Para un análisis más profundo, explora informes, proyecciones y exporta tus datos."
+      "content": "Para un análisis más profundo, explora informes y proyecciones en la pestaña 'Datos'."
     },
     "step9": {
       "title": "Ajustes",
-      "content": "Personaliza la aplicación, gestiona tus categorías, cambia la moneda y mucho más."
+      "content": "Personaliza la aplicación, gestiona tus categorías y cambia la moneda en la pestaña 'Ajustes'."
     },
     "step10": {
       "title": "¡Todo Listo!",

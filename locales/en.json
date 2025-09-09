@@ -1,3 +1,4 @@
+
 {
   "common": {
     "save": "Save",
@@ -261,7 +262,7 @@
     },
     "step6": {
       "title": "Savings Goals",
-      "content": "Create and track your financial goals, whether for a trip, a purchase, or an emergency fund."
+      "content": "Create and track your financial goals, like a trip or an emergency fund."
     },
     "step7": {
       "title": "Budgets",
@@ -269,11 +270,11 @@
     },
     "step8": {
       "title": "Detailed Reports",
-      "content": "For a deeper analysis, explore reports, projections, and export your data."
+      "content": "For a deeper analysis, explore reports and projections in the 'Reports' tab."
     },
     "step9": {
       "title": "Settings",
-      "content": "Customize the app, manage your categories, change the currency, and much more."
+      "content": "Customize the app, manage your categories, and change the currency in the 'Settings' tab."
     },
     "step10": {
       "title": "All Set!",
