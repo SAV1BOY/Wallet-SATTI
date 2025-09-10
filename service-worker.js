@@ -1,11 +1,8 @@
-const CACHE_NAME = 'financas-pro-cache-v7';
+const CACHE_NAME = 'financas-pro-cache-v8';
 const URLS_TO_CACHE = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/locales/pt.json',
-  '/locales/en.json',
-  '/locales/es.json',
   '/icons/icon-192x192.png',
   '/icons/icon-512x512.png'
 ];

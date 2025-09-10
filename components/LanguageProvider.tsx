@@ -2,9 +2,19 @@ import React, { createContext, useState, useContext, useEffect, useCallback, Rea
 import { Language, LANGUAGES } from '../types';
 import { storage } from '../utils/helpers';
 
+// Import translations directly to include them in the build
+import ptTranslations from '../locales/pt.ts';
+import enTranslations from '../locales/en.ts';
+import esTranslations from '../locales/es.ts';
+
 type Translations = { [key: string]: string | Translations };
 
-const translationCache: Partial<Record<Language, Translations>> = {};
+// Statically map locales to their imported translation objects
+const translationsMap: Record<Language, Translations> = {
+  pt: ptTranslations,
+  en: enTranslations,
+  es: esTranslations,
+};
 
 interface LanguageContextType {
   locale: Language;
@@ -28,30 +38,8 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     return 'pt';
   });
 
-  const [translations, setTranslations] = useState<Translations | null>(translationCache[locale] || null);
-
-  useEffect(() => {
-    let isMounted = true;
-    const loadTranslations = async () => {
-      if (translationCache[locale]) {
-        if (isMounted) setTranslations(translationCache[locale] as Translations);
-        return;
-      }
-      try {
-        const response = await fetch(`/locales/${locale}.json`);
-        if (!response.ok) throw new Error(`Failed to fetch translations: ${response.statusText}`);
-        const data = await response.json();
-        translationCache[locale] = data;
-        if (isMounted) {
-          setTranslations(data);
-        }
-      } catch (error) {
-        console.error(`Error loading translations for ${locale}:`, error);
-      }
-    };
-    loadTranslations();
-    return () => { isMounted = false; };
-  }, [locale]);
+  // Translations are now available immediately from the static map
+  const translations = translationsMap[locale];
   
   useEffect(() => {
     document.documentElement.lang = locale;
@@ -89,10 +77,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   const value = { locale, setLocale, t };
   
-  if (!translations) {
-    return null; // Don't render app until translations are loaded
-  }
-
+  // No need to wait for async fetch, app can render right away
   return (
     <LanguageContext.Provider value={value}>
       {children}

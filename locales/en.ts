@@ -1,0 +1,319 @@
+export default {
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "close": "Close",
+    "all": "All",
+    "income": "Income",
+    "expenses": "Expense",
+    "balance": "Balance",
+    "other": "Other",
+    "of": "of",
+    "remaining": "Remaining",
+    "overspent": "Overspent"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "transactions": "Accounts",
+    "savings": "Goals",
+    "budgets": "Budgets",
+    "reports": "Reports",
+    "settings": "Settings",
+    "add": "Add new entry"
+  },
+  "header": {
+    "reports": "Reports",
+    "settings": "Settings"
+  },
+  "dashboard": {
+    "monthBalance": "Month's Balance",
+    "income": "Income",
+    "expenses": "Expenses",
+    "accumulatedBalance": "Accumulated Balance",
+    "incomeVsExpenses": "Income vs. Expenses (current month)",
+    "monthlyFlow": "Monthly Flow (Income vs. Expenses)",
+    "balanceEvolution": "Balance Evolution and Variation",
+    "accumulatedBalanceShort": "Accumulated Balance",
+    "monthlyVariation": "Monthly Variation (%)",
+    "incomeByCategory": "Income by Category",
+    "expensesByCategory": "Expenses by Category"
+  },
+  "transactions": {
+    "searchPlaceholder": "Search entries...",
+    "advancedFilters": "Advanced filters",
+    "all": "All",
+    "income": "Income",
+    "expenses": "Expenses",
+    "noResults": "No results for the applied filters.",
+    "noEntries": "There are no {type} this month.",
+    "entryTypes": {
+      "todos": "entries",
+      "receitas": "income entries",
+      "despesas": "expense entries"
+    },
+    "newEntry": "New Entry",
+    "paid": "Paid",
+    "received": "Received",
+    "overdue": "Overdue",
+    "markUnpaid": "Mark as unpaid",
+    "markPaid": "Mark as Paid",
+    "markReceived": "Mark as Received"
+  },
+  "savings": {
+    "myGoals": "My Goals",
+    "newGoal": "New Goal",
+    "noGoalsMessage": "You don't have any savings goals yet.",
+    "createFirstGoal": "Create my first goal",
+    "targetFor": "Target for: {date}",
+    "addMoney": "Add Money",
+    "goalReached": "🎉 Goal Reached!",
+    "deleteGoalTitle": "Delete Goal",
+    "deleteGoalMessage": "Are you sure you want to delete the goal \"{name}\"?"
+  },
+  "budgets": {
+    "monthBudget": "Month's Budget",
+    "budgeted": "Budgeted",
+    "spent": "Spent",
+    "remaining": "Remaining",
+    "usedPercentage": "You have used <strong>{percentage}%</strong> of your total budget.",
+    "noBudgets": "No budget defined for this month.",
+    "setBudget": "Set Budget"
+  },
+  "reports": {
+    "periodFilter": "Period Filter",
+    "monthly": "Monthly",
+    "quarterly": "Quarterly",
+    "yearly": "Yearly",
+    "all": "All Time",
+    "month": "Month",
+    "year": "Year",
+    "financialOverview": "Financial Overview",
+    "exportCSV": "Export CSV",
+    "finalAccumulatedBalance": "Final Accumulated Balance",
+    "accumulatedToDate": "Accumulated Balance until {date}",
+    "accumulatedToQuarter": "Accumulated Balance until Q{quarter} {year}",
+    "projectedBalance": "Projected Balance ({years} year(s))",
+    "summaryFor": "Summary - {period}",
+    "totalIncome": "Total Income",
+    "totalExpenses": "Total Expenses",
+    "periodBalance": "Period Balance",
+    "categoryBreakdown": "Category Breakdown",
+    "noEntriesForPeriod": "No entries found for this period.",
+    "paymentStatus": "Payment Status",
+    "paid": "Paid",
+    "pending": "Pending",
+    "overdueEntries": "⚠️ Overdue Entries",
+    "overdueByDays": "Overdue by {days} day(s)",
+    "allTime": "All Time",
+    "yearOf": "Year of {year}",
+    "quarterOfYear": "{quarter}º Quarter of {year}"
+  },
+  "settings": {
+    "title": "Settings",
+    "darkMode": "Dark mode",
+    "darkModeDescription": "Enable dark theme",
+    "currency": "Currency",
+    "language": "Language",
+    "data": "Data",
+    "resetData": "Reset all data",
+    "manageCategories": "Manage Categories",
+    "incomeCategories": "Income Categories",
+    "expenseCategories": "Expense Categories",
+    "add": "Add",
+    "deleteCategoryDefaultWarning": "The default \"Other\" category cannot be deleted.",
+    "about": "About",
+    "version": "Wallet SATTI v1.1"
+  },
+  "modals": {
+    "newEntry": "New Entry",
+    "editEntry": "Edit Entry",
+    "entryDetailsTitle": "{type} Details",
+    "income": "Income",
+    "expense": "Expense",
+    "confirmAction": "Confirm Action",
+    "editBudgets": "Edit Budget - {month}",
+    "newGoal": "New Savings Goal",
+    "editGoal": "Edit Goal",
+    "addToGoal": "Add to Goal: {name}",
+    "newCategory": "New Category",
+    "editCategory": "Edit Category",
+    "advancedFilters": "Advanced Filters",
+    "fillRequiredFields": "Please fill all required fields: Description, Value, and Category.",
+    "valueGreaterThanZero": "Please enter an amount greater than zero.",
+    "fillNameAndIcon": "Please fill in the name and icon (emoji)."
+  },
+  "entryForm": {
+    "incomeValue": "Income Value",
+    "expenseValue": "Expense Value",
+    "description": "Description",
+    "incomePlaceholder": "Salary",
+    "expensePlaceholder": "Groceries",
+    "category": "Category",
+    "dueDate": "Due Date",
+    "recurrence": "Recurrence",
+    "recurrenceTypes": {
+      "none": "Don't repeat",
+      "always": "Always",
+      "parcelado": "Installments"
+    },
+    "frequency": "Frequency",
+    "frequencyTypes": {
+      "monthly": "Monthly",
+      "6m": "Every 6 months",
+      "yearly": "Annually"
+    },
+    "parcels": "Number of installments",
+    "saveEntry": "Save Entry",
+    "saveChanges": "Save Changes"
+  },
+  "entryDetail": {
+    "value": "Value",
+    "dueDate": "Due Date",
+    "status": {
+      "paid": "✓ Paid",
+      "overdue": "⚠️ Overdue",
+      "pending": "Pending"
+    },
+    "recurrence": {
+      "parcelado": "Installment {index}/{total}",
+      "always": "Recurring",
+      "none": "Single"
+    },
+    "deleteOccurrence": "Delete this occurrence",
+    "endRecurrence": "End recurrence",
+    "deleteSeries": "Delete entire series",
+    "deleteOccurrenceTitle": "Delete Occurrence",
+    "deleteOccurrenceMessage": "Are you sure you want to delete only this occurrence? The series will continue to exist.",
+    "endRecurrenceTitle": "End Recurrence",
+    "endRecurrenceMessage": "This will prevent new occurrences from being generated from this date onwards. Past occurrences will not be affected. Do you want to continue?",
+    "deleteSeriesTitle": "Delete Entire Series",
+    "deleteSeriesMessage": "Warning: This will permanently delete ALL occurrences (past and future) of this entry. This action cannot be undone."
+  },
+  "editBudgets": {
+    "description": "Set the maximum spending amount for each category this month. Leave blank or at $0.00 to not set a budget.",
+    "saveBudget": "Save Budget"
+  },
+  "goalForm": {
+    "name": "Goal Name",
+    "namePlaceholder": "Trip to Japan",
+    "targetAmount": "Target Amount",
+    "targetAmountPlaceholder": "20000",
+    "targetDate": "Target Date (Optional)",
+    "saveGoal": "Save Goal"
+  },
+  "addToSavings": {
+    "amountToAdd": "Amount to Add",
+    "description": "This action will create a new expense in the \"Savings\" category to keep your balance correct.",
+    "addToSavings": "Add to Savings"
+  },
+  "categoryForm": {
+    "name": "Category Name",
+    "namePlaceholder": "e.g., Supermarket",
+    "icon": "Icon (Emoji)",
+    "color": "Color",
+    "saveCategory": "Save Category"
+  },
+  "deleteCategory": {
+    "title": "Delete Category",
+    "message": "Are you sure you want to delete the category \"{name}\"? Existing entries in this category will be moved to \"Other\"."
+  },
+  "resetData": {
+    "title": "Reset Application Data",
+    "message": "Are you sure you want to reset all data? This will delete ALL entries, budgets, and goals. This action cannot be undone."
+  },
+  "filterForm": {
+    "incomeCategories": "Income Categories",
+    "expenseCategories": "Expense Categories",
+    "filterByValue": "Filter by Value",
+    "anyValue": "Any Value",
+    "greaterThan": "Greater than",
+    "lessThan": "Less than",
+    "equalTo": "Equal to",
+    "filterByDate": "Filter by Date",
+    "startDate": "Start date",
+    "endDate": "End date",
+    "clearFilters": "Clear Filters",
+    "applyFilters": "Apply Filters"
+  },
+  "onboarding": {
+    "step1": {
+      "title": "Welcome to Wallet SATTI!",
+      "content": "This is a quick tour to introduce you to the main features of the app. Shall we start?"
+    },
+    "step2": {
+      "title": "Main Dashboard",
+      "content": "Here you get an overview of your financial health, with monthly balances, flow charts, and accumulated balance."
+    },
+    "step3": {
+      "title": "Month's Balance",
+      "content": "Quickly track total income, expenses, and the balance for the selected month."
+    },
+    "step4": {
+      "title": "Entries",
+      "content": "In this tab, you can view, filter, and manage all your transactions, past and future."
+    },
+    "step5": {
+      "title": "Add Entry",
+      "content": "Use this central button to add new income or expenses quickly and easily."
+    },
+    "step6": {
+      "title": "Savings Goals",
+      "content": "Create and track your financial goals, like a trip or an emergency fund."
+    },
+    "step7": {
+      "title": "Budgets",
+      "content": "Set monthly budgets by category to keep your spending in check and avoid surprises."
+    },
+    "step8": {
+      "title": "Detailed Reports",
+      "content": "For a deeper analysis, explore reports and projections in the 'Reports' tab."
+    },
+    "step9": {
+      "title": "Settings",
+      "content": "Customize the app, manage your categories, and change the currency in the 'Settings' tab."
+    },
+    "step10": {
+      "title": "All Set!",
+      "content": "You have completed the tour. Now it's your turn! Start by adding your first entry and take control of your finances."
+    },
+    "previous": "Previous",
+    "next": "Next",
+    "finish": "Finish",
+    "start": "Start"
+  },
+  "categories": {
+    "receita": {
+      "salary": "Salary",
+      "freelance": "Freelance",
+      "business": "Business",
+      "investment": "Investments",
+      "other_income": "Other"
+    },
+    "despesa": {
+      "food": "Food",
+      "transport": "Transport",
+      "housing": "Housing",
+      "health": "Health",
+      "education": "Education",
+      "entertainment": "Entertainment",
+      "savings": "Savings",
+      "business_exp": "Business Expenses",
+      "tax": "Taxes",
+      "other_expense": "Other"
+    }
+  },
+  "charts": {
+    "legend": {
+        "income": "Income",
+        "expenses": "Expenses",
+        "balance": "Balance"
+    }
+  },
+  "months": {
+      "jan": "Jan", "feb": "Feb", "mar": "Mar", "apr": "Apr", "may": "May", "jun": "Jun", 
+      "jul": "Jul", "aug": "Aug", "sep": "Sep", "oct": "Oct", "nov": "Nov", "dec": "Dec"
+  }
+}
