@@ -71,6 +71,24 @@ export default function App() {
       setShowOnboarding(true);
     }
   }, []);
+
+  useEffect(() => {
+    const registerServiceWorker = () => {
+      if ('serviceWorker' in navigator) {
+        const swUrl = new URL('/service-worker.js', window.location.origin).href;
+        navigator.serviceWorker.register(swUrl)
+          .then(registration => {
+            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            registration.update();
+          })
+          .catch(error => {
+            console.log('ServiceWorker registration failed: ', error);
+          });
+      }
+    };
+    window.addEventListener('load', registerServiceWorker);
+    return () => window.removeEventListener('load', registerServiceWorker);
+  }, []);
   
   useEffect(() => {
     if (data.settings.language !== locale) {
